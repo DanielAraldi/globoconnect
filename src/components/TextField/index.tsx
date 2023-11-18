@@ -62,6 +62,7 @@ export function TextField(props: TextFieldProps) {
         onBlur={onBlur}
         cursorColor={colors.light.main}
         selectionColor={colors.light.main}
+        placeholderTextColor={colors.light.overlay['15p']}
         secureTextEntry={isSecureText}
         {...rest}
       />

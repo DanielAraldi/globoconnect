@@ -11,7 +11,7 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { theme } from './src/config';
-import { Login } from './src/screens';
+import { Routes } from './src/routes';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -41,7 +41,7 @@ export default function App() {
           translucent
         />
 
-        <Login />
+        <Routes />
       </SafeAreaView>
     </SafeAreaProvider>
   );

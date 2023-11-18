@@ -7,10 +7,10 @@ import { theme } from '../../config';
 const { spacings, borderRadius, colors } = theme;
 
 export const Container = styled.TouchableOpacity<GenericButtonStyleProps>`
-  ${({ type }) =>
+  ${({ type, hugWidth }) =>
     type === 'auth'
       ? css`
-          min-width: 48%;
+          min-width: ${hugWidth ? '100%' : '48%'};
         `
       : css`
           width: 100%;

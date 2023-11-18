@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-import { theme } from '../../config';
+import { theme } from '../../../config';
 
 const { colors, spacings } = theme;
 
@@ -49,5 +49,5 @@ export const ButtonWrapper = styled.View`
 
   justify-content: space-between;
 
-  margin: ${spacings[3]}px 0;
+  margin: ${spacings[5]}px 0;
 `;

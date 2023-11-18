@@ -12,6 +12,7 @@ export function GenericButton(props: GenericButtonProps) {
     type,
     text = '',
     socialIcon = 'google',
+    hugWidth = false,
     isLoading = false,
     disabled = false,
     ...rest
@@ -29,6 +30,7 @@ export function GenericButton(props: GenericButtonProps) {
   return (
     <Container
       type={type}
+      hugWidth={hugWidth}
       style={container}
       activeOpacity={0.85}
       disabled={isDisabled}

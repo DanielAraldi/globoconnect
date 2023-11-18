@@ -2,9 +2,9 @@ import { TextInputProps } from 'react-native';
 
 export type TextFieldVariant = 'email' | 'password' | 'text';
 
-export type TextFieldStyleProps = Pick<
+export type TextFieldStyleProps = Omit<
   TextFieldProps,
-  'marginBottom' | 'marginTop'
+  'variant' | 'isLoading'
 > & {
   isFocused?: boolean;
   isDisabled?: boolean;
