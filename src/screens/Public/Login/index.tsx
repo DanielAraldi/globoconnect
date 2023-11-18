@@ -4,7 +4,12 @@ import { When } from 'react-if';
 import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 
 import { UserLoginProps } from '../../../@types';
-import { GenericButton, TextField, Typography } from '../../../components';
+import {
+  Background,
+  GenericButton,
+  TextField,
+  Typography,
+} from '../../../components';
 import { LOGO, theme } from '../../../config';
 import {
   ButtonContent,
@@ -34,57 +39,59 @@ export function Login() {
 
   return (
     <Container behavior={isIos ? 'padding' : 'height'}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Content>
-          <GreetingContent>
-            <Logo source={LOGO} />
+      <Background>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <Content>
+            <GreetingContent>
+              <Logo source={LOGO} />
 
-            <Typography
-              text={'Conecte-se com o mundo\ne explore sensações'}
-              textAlign='center'
-            />
-          </GreetingContent>
+              <Typography
+                text={'Conecte-se com o mundo\ne explore sensações'}
+                textAlign='center'
+              />
+            </GreetingContent>
 
-          <InputContent>
-            <TextField
-              variant='email'
-              returnKeyType='next'
-              placeholder='Email'
-              onChangeText={text => setUser({ ...user, email: text })}
-            />
-
-            <TextField
-              variant='password'
-              marginTop={spacings[3]}
-              returnKeyType='go'
-              placeholder='Senha'
-              onChangeText={text => setUser({ ...user, password: text })}
-              onSubmitEditing={onSubmit}
-            />
-          </InputContent>
-
-          <ButtonContent>
-            <Typography
-              text={'Não tem conta?\nCadastre-se agora com'}
-              textAlign='center'
-            />
-
-            <ButtonWrapper>
-              <GenericButton
-                type='auth'
-                socialIcon='google'
-                hugWidth={!isIos}
+            <InputContent>
+              <TextField
+                variant='email'
+                returnKeyType='next'
+                placeholder='Email'
+                onChangeText={text => setUser({ ...user, email: text })}
               />
 
-              <When condition={isIos}>
-                <GenericButton type='auth' socialIcon='apple' />
-              </When>
-            </ButtonWrapper>
+              <TextField
+                variant='password'
+                marginTop={spacings[3]}
+                returnKeyType='go'
+                placeholder='Senha'
+                onChangeText={text => setUser({ ...user, password: text })}
+                onSubmitEditing={onSubmit}
+              />
+            </InputContent>
 
-            <GenericButton type='primary' text='Entrar' onPress={onSubmit} />
-          </ButtonContent>
-        </Content>
-      </TouchableWithoutFeedback>
+            <ButtonContent>
+              <Typography
+                text={'Não tem conta?\nCadastre-se agora com'}
+                textAlign='center'
+              />
+
+              <ButtonWrapper>
+                <GenericButton
+                  type='auth'
+                  socialIcon='google'
+                  hugWidth={!isIos}
+                />
+
+                <When condition={isIos}>
+                  <GenericButton type='auth' socialIcon='apple' />
+                </When>
+              </ButtonWrapper>
+
+              <GenericButton type='primary' text='Entrar' onPress={onSubmit} />
+            </ButtonContent>
+          </Content>
+        </TouchableWithoutFeedback>
+      </Background>
     </Container>
   );
 }

@@ -2,7 +2,7 @@ import styled from 'styled-components/native';
 
 import { theme } from '../../../config';
 
-const { colors, spacings } = theme;
+const { spacings } = theme;
 
 export const Container = styled.KeyboardAvoidingView`
   flex: 1;
@@ -17,8 +17,6 @@ export const Content = styled.View`
   align-items: center;
 
   padding: ${spacings[4]}px;
-
-  background-color: ${colors.background.main};
 `;
 
 export const GreetingContent = styled.View`
