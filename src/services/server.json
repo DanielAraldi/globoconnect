@@ -3,54 +3,60 @@
     {
       "id": 1,
       "email": "marcosjbm@gmail.com",
+      "name": "Marcos Botene",
       "password": "abc123",
       "nickname": "marcosjbm",
-      "image": "https://avatars.githubusercontent.com/u/67931411?v=4",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/67931411?v=4",
       "followers": 567,
       "following": 112
     },
     {
       "id": 2,
       "email": "rafaelmota@gmail.com",
+      "name": "Rafael Mota",
       "password": "abc123",
       "nickname": "rafaelmota",
-      "image": "https://avatars.githubusercontent.com/u/86445038?v=4",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/86445038?v=4",
       "followers": 223,
       "following": 981
     },
     {
       "id": 3,
       "email": "filipedeschamps@gmail.com",
+      "name": "Filipe Deschamps",
       "password": "abc123",
       "nickname": "filipedeschamps",
-      "image": "https://avatars.githubusercontent.com/u/4248081?v=4",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/4248081?v=4",
       "followers": 12576,
       "following": 765
     },
     {
       "id": 4,
       "email": "rocketseat@gmail.com",
+      "name": "Rockeseat",
       "password": "abc123",
       "nickname": "rocketseat",
-      "image": "https://avatars.githubusercontent.com/u/28929274?s=200&v=4",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/28929274?s=200&v=4",
       "followers": 330981,
       "following": 1171
     },
     {
       "id": 5,
       "email": "maykbrito@gmail.com",
+      "name": "Mayk Brito",
       "password": "abc123",
       "nickname": "maykbrito",
-      "image": "https://avatars.githubusercontent.com/u/6643122?v=4",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/6643122?v=4",
       "followers": 14634,
       "following": 45
     },
     {
       "id": 6,
       "email": "diego3g@gmail.com",
+      "name": "Diego 3g",
       "password": "abc123",
       "nickname": "diego3g",
-      "image": "https://avatars.githubusercontent.com/u/2254731?v=4",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/2254731?v=4",
       "followers": 25434,
       "following": 180
     }
@@ -58,33 +64,49 @@
   "posts": [
     {
       "id": 1,
-      "userId": 6,
       "title": "Olá pessoal! Hoje vamos falar de ReactJS!",
       "video": "",
       "likes": 209,
       "comments": 1,
       "shareds": 12,
-      "liked": true
+      "liked": true,
+      "user": {
+        "id": 6,
+        "nickname": "diego3g",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2254731?v=4"
+      }
     }
   ],
   "comments": [
     {
       "id": 1,
       "postId": 1,
-      "userId": 1,
-      "comment": "Nossa que legal, não sabia que dava pra fazer tanto coisa com ReactJS!!"
+      "comment": "Nossa que legal, não sabia que dava pra fazer tanto coisa com ReactJS!!",
+      "user": {
+        "id": 1,
+        "nickname": "marcosjbm",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/67931411?v=4"
+      }
     },
     {
       "id": 5,
       "postId": 1,
-      "userId": 2,
-      "comment": "Bora aprender ReactJS."
+      "comment": "Bora aprender ReactJS.",
+      "user": {
+        "id": 2,
+        "nickname": "rafaelmota",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/86445038?v=4"
+      }
     },
     {
       "id": 3,
       "postId": 1,
-      "userId": 2,
-      "comment": "Boa Diegão, sempre mandando bem nos ensinamentos!👌"
+      "comment": "Boa Diegão, sempre mandando bem nos ensinamentos!👌",
+      "user": {
+        "id": 3,
+        "nickname": "filipedeschamps",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/4248081?v=4"
+      }
     }
   ]
 }
