@@ -43,7 +43,7 @@ export const PostVideoWrapper = styled.View<PublishStyleProps>`
   ${({ variant }) =>
     variant === 'unique' &&
     css`
-      margin-bottom: ${spacings[4]}px;
+      margin-bottom: ${spacings[3]}px;
     `}
 
   background-color: ${colors.light.overlay['10p']};
@@ -68,4 +68,12 @@ export const PostBar = styled.View`
 
   border-bottom-width: 1px;
   border-bottom-color: ${colors.light.main};
+`;
+
+export const DescriptionWrapper = styled.View`
+  width: 100%;
+
+  padding: 0 ${spacings[4]}px;
+
+  margin-bottom: ${spacings[4]}px;
 `;

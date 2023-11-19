@@ -1,7 +1,7 @@
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ResizeMode } from 'expo-av';
 import { useMemo } from 'react';
-import { Else, If, Then } from 'react-if';
+import { Else, If, Then, When } from 'react-if';
 import { Share, TouchableOpacity } from 'react-native';
 
 import { PublishProps } from '../../@types';
@@ -12,6 +12,7 @@ import { Typography } from '../Typography';
 import { UserComment } from '../UserComment';
 import {
   Container,
+  DescriptionWrapper,
   PostBar,
   PostVideo,
   PostVideoWrapper,
@@ -20,7 +21,15 @@ import {
 } from './styles';
 
 export function Publish(props: PublishProps) {
-  const { name, uri, liked, comments, variant = 'feed' } = props;
+  const {
+    name,
+    liked,
+    comments,
+    description,
+    nickname,
+    url,
+    variant = 'feed',
+  } = props;
 
   const { colors, spacings } = theme;
 
@@ -31,11 +40,11 @@ export function Publish(props: PublishProps) {
   };
 
   async function handleShare(): Promise<void> {
-    const message = `Ei, da uma olhada nesse vídeo! Acesso em: ${uri}`;
+    const message = `Ei, da uma olhada nesse vídeo! Acesso em: ${url}`;
 
     Share.share({
       message,
-      url: uri,
+      url,
       title: 'Venha fazer parte do GloboConnect!',
     });
   }
@@ -82,7 +91,7 @@ export function Publish(props: PublishProps) {
 
       <PostVideoWrapper variant={variant}>
         <PostVideo
-          source={{ uri }}
+          source={{ uri: url }}
           useNativeControls={false}
           resizeMode={ResizeMode.COVER}
           isLooping
@@ -90,6 +99,16 @@ export function Publish(props: PublishProps) {
           volume={1}
         />
       </PostVideoWrapper>
+
+      <When condition={!isFeed}>
+        <DescriptionWrapper>
+          <Typography
+            variant='nunitoSemiBold'
+            text={`@${nickname}: ${description}`}
+            fontSize={'medium'}
+          />
+        </DescriptionWrapper>
+      </When>
 
       <If condition={isFeed}>
         <Then>
@@ -125,6 +144,16 @@ export function Publish(props: PublishProps) {
           </If>
         </Else>
       </If>
+
+      <When condition={isFeed}>
+        <DescriptionWrapper>
+          <Typography
+            variant='nunitoSemiBold'
+            text={`@${nickname}: ${description}`}
+            fontSize={'medium'}
+          />
+        </DescriptionWrapper>
+      </When>
     </Container>
   );
 }

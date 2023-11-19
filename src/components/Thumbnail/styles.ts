@@ -6,7 +6,7 @@ const { spacings, colors } = theme;
 
 export const Container = styled.TouchableOpacity`
   width: 50%;
-  height: ${spacings[14]}px;
+  height: ${spacings[14] + spacings[4]}px;
 
   background-color: ${colors.light.overlay['10p']};
 `;

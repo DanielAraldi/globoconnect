@@ -8,8 +8,10 @@ export interface PublishStyleProps {
 
 export interface PublishProps {
   name: string;
-  uri: string;
+  nickname: string;
   liked: boolean;
   comments: Comment[];
+  url: string;
+  description: string;
   variant?: 'feed' | 'unique';
 }

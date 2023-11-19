@@ -173,10 +173,12 @@ export function Profile() {
         onRequestClose={handleCloseModal}
       >
         <Publish
-          comments={[]}
+          url={serverJson.posts[0].video}
+          nickname={serverJson.posts[0].user.nickname}
+          description={serverJson.posts[0].title}
+          comments={serverJson.comments}
           name={'Diego 3g'}
-          uri='http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'
-          variant='feed'
+          variant='unique'
           liked
         />
       </ModalView>
