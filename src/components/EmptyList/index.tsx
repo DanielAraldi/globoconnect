@@ -12,7 +12,7 @@ export function EmptyList(props: EmptyListProps) {
 
   const icons: Record<EmptyListProps['variant'], EmptyListIcon> = {
     comments: 'comment-off-outline',
-    posts: 'post-outline',
+    posts: 'post',
   };
 
   return (

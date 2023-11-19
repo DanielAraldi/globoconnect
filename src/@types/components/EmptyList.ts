@@ -1,4 +1,4 @@
-export type EmptyListIcon = 'comment-off-outline' | 'post-outline';
+export type EmptyListIcon = 'comment-off-outline' | 'post';
 
 export interface EmptyListProps {
   variant: 'comments' | 'posts';

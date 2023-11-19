@@ -10,7 +10,14 @@ import { Avatar } from '../Avatar';
 import { EmptyList } from '../EmptyList';
 import { Typography } from '../Typography';
 import { UserComment } from '../UserComment';
-import { Container, PostBar, PostVideo, UserBar, Username } from './styles';
+import {
+  Container,
+  PostBar,
+  PostVideo,
+  PostVideoWrapper,
+  UserBar,
+  Username,
+} from './styles';
 
 export function Publish(props: PublishProps) {
   const { name, uri, liked, comments, variant = 'feed' } = props;
@@ -73,15 +80,16 @@ export function Publish(props: PublishProps) {
         </TouchableOpacity>
       </UserBar>
 
-      <PostVideo
-        variant={variant}
-        source={{ uri }}
-        useNativeControls={false}
-        resizeMode={ResizeMode.COVER}
-        isLooping
-        shouldPlay
-        volume={1}
-      />
+      <PostVideoWrapper variant={variant}>
+        <PostVideo
+          source={{ uri }}
+          useNativeControls={false}
+          resizeMode={ResizeMode.COVER}
+          isLooping
+          shouldPlay
+          volume={1}
+        />
+      </PostVideoWrapper>
 
       <If condition={isFeed}>
         <Then>

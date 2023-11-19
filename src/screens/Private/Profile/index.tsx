@@ -6,6 +6,7 @@ import { PostProps } from '../../../@types';
 import {
   Avatar,
   Background,
+  EmptyList,
   Header,
   ModalView,
   Publish,
@@ -58,7 +59,7 @@ export function Profile() {
 
   const renderItem = useCallback(
     ({ item }: RenderItem<PostProps>) => (
-      <Thumbnail uri={item.thumbnail} onPress={() => setIsOpenPost(true)} />
+      <Thumbnail url={item.video} onPress={() => setIsOpenPost(true)} />
     ),
     [],
   );
@@ -156,6 +157,12 @@ export function Profile() {
             renderItem={renderItem}
             contentContainerStyle={{ flexGrow: 1 }}
             numColumns={2}
+            ListEmptyComponent={() => (
+              <EmptyList
+                variant='posts'
+                message={'Não há publiações\nfeitas no momento'}
+              />
+            )}
           />
         </PostContent>
       </Container>
@@ -168,7 +175,7 @@ export function Profile() {
         <Publish
           comments={[]}
           name={'Diego 3g'}
-          uri='https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'
+          uri='http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'
           variant='feed'
           liked
         />

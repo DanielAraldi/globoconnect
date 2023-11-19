@@ -15,7 +15,6 @@ export interface PostProps {
   id: number;
   title: string;
   video: string;
-  thumbnail: string;
   likes: number;
   comments: number;
   shareds: number;

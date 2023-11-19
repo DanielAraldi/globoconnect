@@ -36,7 +36,7 @@ export const Username = styled.View`
   gap: ${spacings[1]}px;
 `;
 
-export const PostVideo = styled(Video)<PublishStyleProps>`
+export const PostVideoWrapper = styled.View<PublishStyleProps>`
   width: 100%;
   height: ${spacings[15] * 2}px;
 
@@ -45,6 +45,13 @@ export const PostVideo = styled(Video)<PublishStyleProps>`
     css`
       margin-bottom: ${spacings[4]}px;
     `}
+
+  background-color: ${colors.light.overlay['10p']};
+`;
+
+export const PostVideo = styled(Video)`
+  width: 100%;
+  height: 100%;
 `;
 
 export const PostBar = styled.View`

@@ -103,8 +103,7 @@
     {
       "id": 1,
       "title": "O segredo para a evolução do seu código!",
-      "video": "../../data/mock/videos/code.mp4",
-      "thumbnail": "https://img.youtube.com/vi/f7z0v16XbB4/hqdefault.jpg",
+      "video": "https://isorepublic.com/wp-content/uploads/2018/02/isorepublic-free-video-bokeh-street-scene-night.mp4",
       "likes": 209,
       "comments": 1,
       "shareds": 12,
@@ -115,5 +114,15 @@
         "avatarUrl": "https://avatars.githubusercontent.com/u/2254731?v=4"
       }
     }
+  ],
+  "urls": [
+    "https://isorepublic.com/wp-content/uploads/2018/02/isorepublic-free-video-bokeh-street-scene-night.mp4",
+    "https://isorepublic.com/wp-content/uploads/2019/02/iso-republic-free-video-091.mp4",
+    "https://isorepublic.com/wp-content/uploads/2019/01/iso-republic-free-video-046.mp4",
+    "https://isorepublic.com/wp-content/uploads/2019/01/iso-republic-free-video-070.mp4",
+    "https://isorepublic.com/wp-content/uploads/2018/07/iso-republic-free-video-man-writing-notepad.mp4",
+    "https://isorepublic.com/wp-content/uploads/2018/03/isorepublic-free-video-rain-falling.mp4",
+    "https://isorepublic.com/wp-content/uploads/2019/02/iso-republic-free-video-110.mp4",
+    "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4"
   ]
 }
