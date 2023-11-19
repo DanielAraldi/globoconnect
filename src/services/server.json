@@ -8,7 +8,8 @@
       "nickname": "marcosjbm",
       "avatarUrl": "https://avatars.githubusercontent.com/u/67931411?v=4",
       "followers": 567,
-      "following": 112
+      "following": 112,
+      "posts": 0
     },
     {
       "id": 2,
@@ -18,7 +19,8 @@
       "nickname": "rafaelmota",
       "avatarUrl": "https://avatars.githubusercontent.com/u/86445038?v=4",
       "followers": 223,
-      "following": 981
+      "following": 981,
+      "posts": 0
     },
     {
       "id": 3,
@@ -28,7 +30,8 @@
       "nickname": "filipedeschamps",
       "avatarUrl": "https://avatars.githubusercontent.com/u/4248081?v=4",
       "followers": 12576,
-      "following": 765
+      "following": 765,
+      "posts": 0
     },
     {
       "id": 4,
@@ -38,7 +41,8 @@
       "nickname": "rocketseat",
       "avatarUrl": "https://avatars.githubusercontent.com/u/28929274?s=200&v=4",
       "followers": 330981,
-      "following": 1171
+      "following": 1171,
+      "posts": 0
     },
     {
       "id": 5,
@@ -48,7 +52,8 @@
       "nickname": "maykbrito",
       "avatarUrl": "https://avatars.githubusercontent.com/u/6643122?v=4",
       "followers": 14634,
-      "following": 45
+      "following": 45,
+      "posts": 0
     },
     {
       "id": 6,
@@ -58,7 +63,8 @@
       "nickname": "diego3g",
       "avatarUrl": "https://avatars.githubusercontent.com/u/2254731?v=4",
       "followers": 25434,
-      "following": 180
+      "following": 180,
+      "posts": 1
     }
   ],
   "posts": [

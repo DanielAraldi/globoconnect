@@ -16,7 +16,7 @@ export type TypographyAlign = 'center' | 'left' | 'right';
 
 export type TypographyStyleProps = Pick<
   Required<TypographyProps>,
-  'fontSize' | 'color' | 'variant' | 'textAlign'
+  'fontSize' | 'color' | 'variant' | 'textAlign' | 'isCapitalized'
 >;
 
 export interface TypographyProps extends TextProps {
@@ -25,4 +25,5 @@ export interface TypographyProps extends TextProps {
   fontSize?: TypographyFontSize;
   color?: string;
   textAlign?: TypographyAlign;
+  isCapitalized?: boolean;
 }

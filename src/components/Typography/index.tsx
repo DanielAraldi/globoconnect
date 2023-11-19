@@ -9,6 +9,7 @@ export function Typography(props: TypographyProps) {
     fontSize = 'medium',
     color = theme.colors.light.main,
     textAlign = 'left',
+    isCapitalized = false,
     ...rest
   } = props;
 
@@ -18,6 +19,7 @@ export function Typography(props: TypographyProps) {
       fontSize={fontSize}
       color={color}
       textAlign={textAlign}
+      isCapitalized={isCapitalized}
       {...rest}
     >
       {text}

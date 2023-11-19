@@ -23,7 +23,7 @@ export function Header({ variant }: HeaderProps) {
     <Container>
       <TypographyWrapper>
         <Typography
-          text={isProfile ? '@nickname' : 'GloboConnect'}
+          text={isProfile ? '@diego3g' : 'GloboConnect'}
           variant={isProfile ? 'nunitoBold' : 'nunitoSemiBold'}
           fontSize='large'
           ellipsizeMode='tail'

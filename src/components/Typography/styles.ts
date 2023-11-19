@@ -8,4 +8,6 @@ export const Text = styled.Text<TypographyStyleProps>`
   font-size: ${({ fontSize }) => theme.fontSizes[fontSize]}px;
   text-align: ${({ textAlign }) => textAlign};
   color: ${({ color }) => color};
+  text-transform: ${({ isCapitalized }) =>
+    isCapitalized ? 'capitalize' : 'none'};
 `;
