@@ -1,11 +1,17 @@
 import { Video } from 'expo-av';
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
+import { PublishStyleProps } from '../../@types';
 import { theme } from '../../config';
 
 const { spacings, colors } = theme;
 
-export const Container = styled.ScrollView`
+export const Container = styled.ScrollView.attrs({
+  showsVerticalScrollIndicator: false,
+  contentContainerStyle: {
+    paddingBottom: spacings[9],
+  },
+})`
   flex-grow: 1;
 
   width: 100%;
@@ -33,17 +39,26 @@ export const Username = styled.View`
   gap: ${spacings[1]}px;
 `;
 
-export const PostVideo = styled(Video)`
+export const PostVideo = styled(Video)<PublishStyleProps>`
   width: 100%;
   height: ${spacings[15] * 2}px;
+
+  ${({ variant }) =>
+    variant === 'unique' &&
+    css`
+      margin-bottom: ${spacings[4]}px;
+    `}
 `;
 
 export const PostBar = styled.View`
   flex-direction: row;
 
+  justify-content: space-between;
   align-items: center;
 
   gap: ${spacings[1]}px;
+
+  margin-bottom: ${spacings[3]}px;
 
   padding: ${spacings[1]}px ${spacings[4]}px;
 

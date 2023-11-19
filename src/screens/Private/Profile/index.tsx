@@ -166,6 +166,7 @@ export function Profile() {
         onRequestClose={handleCloseModal}
       >
         <Publish
+          comments={[...serverJson.comments]}
           name={'Diego 3g'}
           uri='https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'
           variant='unique'

@@ -1,5 +1,6 @@
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { ResizeMode } from 'expo-av';
+import { useMemo } from 'react';
 import { Else, If, Then, When } from 'react-if';
 import { Share, TouchableOpacity } from 'react-native';
 
@@ -7,10 +8,11 @@ import { PublishProps } from '../../@types';
 import { theme } from '../../config';
 import { Avatar } from '../Avatar';
 import { Typography } from '../Typography';
+import { UserComment } from '../UserComment';
 import { Container, PostBar, PostVideo, UserBar, Username } from './styles';
 
 export function Publish(props: PublishProps) {
-  const { name, uri, liked, variant = 'feed' } = props;
+  const { name, uri, liked, comments, variant = 'feed' } = props;
 
   const { colors, spacings } = theme;
 
@@ -28,6 +30,18 @@ export function Publish(props: PublishProps) {
       title: 'Venha fazer parte do GloboConnect!',
     });
   }
+
+  const renderComments = useMemo(
+    () =>
+      comments.map(item => (
+        <UserComment
+          key={item.id}
+          comment={item.comment}
+          nickname={item.user.nickname}
+        />
+      )),
+    [],
+  );
 
   return (
     <Container>
@@ -56,6 +70,7 @@ export function Publish(props: PublishProps) {
       </UserBar>
 
       <PostVideo
+        variant={variant}
         source={{ uri }}
         useNativeControls={false}
         resizeMode={ResizeMode.COVER}
@@ -64,27 +79,29 @@ export function Publish(props: PublishProps) {
         volume={1}
       />
 
-      <PostBar>
-        <When condition={variant === 'feed'}>
+      <When condition={variant === 'feed'}>
+        <PostBar>
           <TouchableOpacity activeOpacity={0.85} onPress={handleShare}>
             <MaterialCommunityIcons
               name='comment-text-outline'
               {...commonIconProps}
             />
           </TouchableOpacity>
-        </When>
 
-        <TouchableOpacity activeOpacity={0.85} onPress={handleShare}>
-          <If condition={liked}>
-            <Then>
-              <MaterialCommunityIcons name='heart' {...commonIconProps} />
-            </Then>
-            <Else>
-              <Feather name='heart' {...commonIconProps} />
-            </Else>
-          </If>
-        </TouchableOpacity>
-      </PostBar>
+          <TouchableOpacity activeOpacity={0.85} onPress={handleShare}>
+            <If condition={liked}>
+              <Then>
+                <MaterialCommunityIcons name='heart' {...commonIconProps} />
+              </Then>
+              <Else>
+                <Feather name='heart' {...commonIconProps} />
+              </Else>
+            </If>
+          </TouchableOpacity>
+        </PostBar>
+      </When>
+
+      {renderComments}
     </Container>
   );
 }
