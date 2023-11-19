@@ -1,5 +1,6 @@
 export * from './Avatar';
 export * from './Background';
+export * from './EmptyList';
 export * from './GenericButton';
 export * from './Header';
 export * from './Load';

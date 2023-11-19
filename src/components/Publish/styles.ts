@@ -8,9 +8,6 @@ const { spacings, colors } = theme;
 
 export const Container = styled.ScrollView.attrs({
   showsVerticalScrollIndicator: false,
-  contentContainerStyle: {
-    paddingBottom: spacings[9],
-  },
 })`
   flex-grow: 1;
 
