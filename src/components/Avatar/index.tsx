@@ -1,7 +1,7 @@
-import { UserPhotoProps } from '../../@types';
+import { AvatarProps } from '../../@types';
 import { Container, Photo } from './styles';
 
-export function UserPhoto({ variant }: UserPhotoProps) {
+export function Avatar({ variant }: AvatarProps) {
   return (
     <Container variant={variant}>
       <Photo

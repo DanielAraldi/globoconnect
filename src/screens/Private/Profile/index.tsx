@@ -1,11 +1,30 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { View } from 'react-native';
+import { useCallback, useState } from 'react';
+import { FlatList, View } from 'react-native';
 
-import { Background, Header, Typography, UserPhoto } from '../../../components';
+import { PostProps } from '../../../@types';
+import {
+  Avatar,
+  Background,
+  Header,
+  ModalView,
+  Publish,
+  Thumbnail,
+  Typography,
+} from '../../../components';
 import { theme } from '../../../config';
-import { Container, PostHeader, SocialContent, UserContainer } from './styles';
+import serverJson from '../../../services/mock/server.json';
+import {
+  Container,
+  PostContent,
+  PostHeader,
+  SocialContent,
+  UserContainer,
+} from './styles';
 
 export function Profile() {
+  const [isOpenPost, setIsOpenPost] = useState<boolean>(false);
+
   const { colors, spacings } = theme;
 
   function handleValueDigits(value: string): string {
@@ -31,13 +50,26 @@ export function Profile() {
     return `${digits}${amountDigits < 7 ? 'mil' : 'mi'}`;
   }
 
+  function handleCloseModal(): void {
+    setIsOpenPost(false);
+  }
+
+  const keyExtractor = useCallback((item: PostProps) => item.id.toString(), []);
+
+  const renderItem = useCallback(
+    ({ item }: RenderItem<PostProps>) => (
+      <Thumbnail uri={item.thumbnail} onPress={() => setIsOpenPost(true)} />
+    ),
+    [],
+  );
+
   return (
     <Background>
       <Header variant='profile' />
 
       <Container>
         <UserContainer>
-          <UserPhoto variant='profile' />
+          <Avatar variant='profile' />
 
           <SocialContent>
             <View>
@@ -116,7 +148,30 @@ export function Profile() {
             fontSize='medium'
           />
         </PostHeader>
+
+        <PostContent>
+          <FlatList
+            data={[...serverJson.posts]}
+            keyExtractor={keyExtractor}
+            renderItem={renderItem}
+            contentContainerStyle={{ flexGrow: 1 }}
+            numColumns={2}
+          />
+        </PostContent>
       </Container>
+
+      <ModalView
+        visible={isOpenPost}
+        onDismiss={handleCloseModal}
+        onRequestClose={handleCloseModal}
+      >
+        <Publish
+          name={'Diego 3g'}
+          uri='https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4'
+          variant='unique'
+          liked
+        />
+      </ModalView>
     </Background>
   );
 }

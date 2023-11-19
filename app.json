@@ -23,6 +23,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      [
+        "expo-av",
+        {
+          "microphonePermission": "O $(PRODUCT_NAME) precisa ter acesso ao seu microfone."
+        }
+      ]
+    ]
   }
 }

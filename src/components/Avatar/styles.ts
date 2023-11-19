@@ -1,11 +1,11 @@
 import styled from 'styled-components/native';
 
-import { UserPhotoStyleProps } from '../../@types';
+import { AvatarProps } from '../../@types';
 import { theme } from '../../config';
 
 const { spacings, colors, borderRadius } = theme;
 
-export const Container = styled.Pressable<UserPhotoStyleProps>`
+export const Container = styled.Pressable<AvatarProps>`
   width: ${({ variant }) => spacings[variant === 'profile' ? 13 : 9]}px;
   height: ${({ variant }) => spacings[variant === 'profile' ? 13 : 9]}px;
 

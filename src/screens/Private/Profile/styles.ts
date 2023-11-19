@@ -1,4 +1,3 @@
-import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 
 import { theme } from '../../../config';
@@ -6,9 +5,12 @@ import { theme } from '../../../config';
 const { spacings, colors } = theme;
 
 export const Container = styled.View`
+  flex: 1;
+
   width: 100%;
 
   padding: ${spacings[4]}px;
+  padding-bottom: 0;
 `;
 
 export const UserContainer = styled.View`
@@ -31,7 +33,7 @@ export const SocialContent = styled.View`
 export const PostHeader = styled.View`
   flex-direction: row;
 
-  width: ${Dimensions.get('window').width - spacings[9]}px;
+  width: 100%;
   height: ${spacings[10]}px;
 
   justify-content: center;
@@ -44,4 +46,10 @@ export const PostHeader = styled.View`
   border-width: 1px;
   border-top-color: ${colors.light.overlay['50p']};
   border-bottom-color: ${colors.light.overlay['50p']};
+`;
+
+export const PostContent = styled.View`
+  flex: 1;
+
+  width: 100%;
 `;
