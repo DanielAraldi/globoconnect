@@ -4,8 +4,6 @@ import { TypographyStyleProps } from '../../@types';
 import { theme } from '../../config';
 
 export const Text = styled.Text<TypographyStyleProps>`
-  width: 100%;
-
   font-family: ${({ variant }) => theme.fontFamilies[variant]};
   font-size: ${({ fontSize }) => theme.fontSizes[fontSize]}px;
   text-align: ${({ textAlign }) => textAlign};

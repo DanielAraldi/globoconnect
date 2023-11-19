@@ -1,14 +1,13 @@
 import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { Typography } from '../components';
 import { theme } from '../config';
-import { Home, Profile } from '../screens';
+import { Add, Home, Profile } from '../screens';
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
 export function PrivateRoutes() {
-  const { colors } = theme;
+  const { colors, spacings } = theme;
 
   function handleColor(isFocused: boolean): string {
     return isFocused ? colors.light.main : colors.light.overlay['50p'];
@@ -29,17 +28,27 @@ export function PrivateRoutes() {
         name='Home'
         component={Home}
         options={{
-          tabBarLabel: ({ focused }) => (
-            <Typography
-              text='Home'
-              variant='nunitoRegular'
-              textAlign='center'
-              fontSize='small'
+          tabBarShowLabel: false,
+          tabBarIcon: ({ focused }) => (
+            <Feather
+              name='home'
+              size={spacings[5]}
               color={handleColor(focused)}
             />
           ),
+        }}
+      />
+      <Screen
+        name='Add'
+        component={Add}
+        options={{
+          tabBarShowLabel: false,
           tabBarIcon: ({ focused }) => (
-            <Feather name='home' size={16} color={handleColor(focused)} />
+            <Feather
+              name='plus-circle'
+              size={spacings[5]}
+              color={handleColor(focused)}
+            />
           ),
         }}
       />
@@ -47,17 +56,13 @@ export function PrivateRoutes() {
         name='Profile'
         component={Profile}
         options={{
-          tabBarLabel: ({ focused }) => (
-            <Typography
-              text='Perfil'
-              variant='nunitoRegular'
-              textAlign='center'
-              fontSize='small'
+          tabBarShowLabel: false,
+          tabBarIcon: ({ focused }) => (
+            <Feather
+              name='user'
+              size={spacings[5]}
               color={handleColor(focused)}
             />
-          ),
-          tabBarIcon: ({ focused }) => (
-            <Feather name='user' size={16} color={handleColor(focused)} />
           ),
         }}
       />

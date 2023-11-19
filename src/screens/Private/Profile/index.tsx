@@ -1,9 +1,9 @@
-import { Background, Typography } from '../../../components';
+import { Background, Header } from '../../../components';
 
 export function Profile() {
   return (
     <Background>
-      <Typography text='Home' textAlign='center' />
+      <Header variant='profile' />
     </Background>
   );
 }
