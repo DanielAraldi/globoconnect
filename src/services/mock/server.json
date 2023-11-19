@@ -67,27 +67,11 @@
       "posts": 1
     }
   ],
-  "posts": [
-    {
-      "id": 1,
-      "title": "Olá pessoal! Hoje vamos falar de ReactJS!",
-      "video": "",
-      "likes": 209,
-      "comments": 1,
-      "shareds": 12,
-      "liked": true,
-      "user": {
-        "id": 6,
-        "nickname": "diego3g",
-        "avatarUrl": "https://avatars.githubusercontent.com/u/2254731?v=4"
-      }
-    }
-  ],
   "comments": [
     {
       "id": 1,
       "postId": 1,
-      "comment": "Nossa que legal, não sabia que dava pra fazer tanto coisa com ReactJS!!",
+      "comment": "Nossa que legal, isso é maneiro demais!!",
       "user": {
         "id": 1,
         "nickname": "marcosjbm",
@@ -97,7 +81,7 @@
     {
       "id": 5,
       "postId": 1,
-      "comment": "Bora aprender ReactJS.",
+      "comment": "Muito bommmmmmmm.",
       "user": {
         "id": 2,
         "nickname": "rafaelmota",
@@ -112,6 +96,22 @@
         "id": 3,
         "nickname": "filipedeschamps",
         "avatarUrl": "https://avatars.githubusercontent.com/u/4248081?v=4"
+      }
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "title": "O segredo para a evolução do seu código!",
+      "video": "../../data/mock/videos/code.mp4",
+      "likes": 209,
+      "comments": 1,
+      "shareds": 12,
+      "liked": true,
+      "user": {
+        "id": 6,
+        "nickname": "diego3g",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/2254731?v=4"
       }
     }
   ]
