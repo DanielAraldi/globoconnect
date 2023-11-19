@@ -12,6 +12,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { theme } from './src/config';
 import { Routes } from './src/routes';
+import { getStatusBarHeight } from './src/utils';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -52,5 +53,7 @@ const styles = StyleSheet.create({
     flex: 1,
 
     backgroundColor: theme.colors.background.main,
+
+    paddingTop: getStatusBarHeight(),
   },
 });
