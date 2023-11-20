@@ -1,6 +1,7 @@
 import { Feather } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
 import { Camera as ExpoCamera } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Else, If, Then } from 'react-if';
 import { Animated, Keyboard, TouchableWithoutFeedback } from 'react-native';
@@ -17,9 +18,11 @@ import {
 } from '../../../components';
 import { theme } from '../../../config';
 import {
+  ButtonCameraContent,
   ButtonContent,
   Camera,
   Container,
+  GalleryButton,
   GoBackButton,
   InputContent,
   RecordButton,
@@ -30,13 +33,15 @@ export function Add() {
   const [isOpenModalCamera, setIsOpenModalCamera] = useState<boolean>(false);
   const [post, setPost] = useState<PostProps>({} as PostProps);
 
-  const [permission] = ExpoCamera.useCameraPermissions();
+  const [permissionCamera] = ExpoCamera.useCameraPermissions();
+  const [permissionLibrary] = ImagePicker.useCameraPermissions();
 
   const cameraRef = useRef<ExpoCamera>(null);
   const fadeAnimation = useRef(new Animated.Value(1)).current;
 
   const { spacings, colors } = theme;
   const isDisabledSumbit = !post?.video || !post?.title;
+  const isAllowed = !!permissionCamera?.granted && !!permissionLibrary?.granted;
   const videoRecordingMessage = post?.video
     ? 'Seu vídeo foi gravado com sucesso! 📷'
     : 'Ei, bora postar um vídeo!';
@@ -51,6 +56,7 @@ export function Add() {
   async function handleRequestPermission(): Promise<void> {
     await ExpoCamera.requestMicrophonePermissionsAsync();
     await ExpoCamera.requestCameraPermissionsAsync();
+    await ImagePicker.getMediaLibraryPermissionsAsync();
   }
 
   async function handleOnPressOut(): Promise<void> {
@@ -60,7 +66,7 @@ export function Add() {
 
   async function handleRecordVideo(): Promise<void> {
     if (cameraRef.current) {
-      const ONE_MINUTE = 100000;
+      const ONE_MINUTE = 100_000;
 
       Animated.timing(fadeAnimation, {
         toValue: 0,
@@ -74,17 +80,35 @@ export function Add() {
         quality: '16:9',
       });
 
-      setPost({
-        ...post,
-        video: uri,
-        comments: 0,
-        likes: 0,
-        shareds: 0,
-        liked: false,
-      });
+      setPost({ ...post, video: uri, comments: 0, likes: 0, liked: false });
     }
 
     handleCloseModal();
+  }
+
+  async function handleGalleryVideo(): Promise<void> {
+    const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
+      quality: 1,
+      selectionLimit: 1,
+      videoMaxDuration: 60,
+      allowsEditing: true,
+      allowsMultipleSelection: false,
+      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+      videoQuality: ImagePicker.UIImagePickerControllerQualityType.High,
+      presentationStyle: ImagePicker.UIImagePickerPresentationStyle.FULL_SCREEN,
+    });
+
+    if (!canceled && assets) {
+      const [asset] = assets;
+      setPost({
+        ...post,
+        video: asset.uri,
+        comments: 0,
+        likes: 0,
+        liked: false,
+      });
+      handleCloseModal();
+    }
   }
 
   useFocusEffect(
@@ -141,7 +165,7 @@ export function Add() {
         visible={isOpenModalCamera}
         onRequestClose={handleCloseModal}
       >
-        <If condition={!!permission?.granted}>
+        <If condition={isAllowed}>
           <Then>
             <Camera ref={cameraRef}>
               <GoBackButton onPress={handleCloseModal}>
@@ -152,21 +176,31 @@ export function Add() {
                 />
               </GoBackButton>
 
-              <RecordButtonWrapper style={animationStyle}>
-                <RecordButton
-                  activeOpacity={0.85}
-                  onLongPress={handleRecordVideo}
-                  onPressOut={handleOnPressOut}
-                />
-              </RecordButtonWrapper>
+              <ButtonCameraContent>
+                <RecordButtonWrapper style={animationStyle}>
+                  <RecordButton
+                    activeOpacity={0.85}
+                    onLongPress={handleRecordVideo}
+                    onPressOut={handleOnPressOut}
+                  />
+                </RecordButtonWrapper>
+
+                <GalleryButton onPress={handleGalleryVideo}>
+                  <Feather
+                    name='image'
+                    color={colors.light.main}
+                    size={spacings[10]}
+                  />
+                </GalleryButton>
+              </ButtonCameraContent>
             </Camera>
           </Then>
           <Else>
             <EmptyMessage
-              message={
-                'Habilite à sua câmera\npara que você possa gravar vídeos'
-              }
               variant='camera'
+              message={
+                'Habilite à sua câmera e o acesso à\ngaleria para que você possa gravar vídeos'
+              }
             />
           </Else>
         </If>

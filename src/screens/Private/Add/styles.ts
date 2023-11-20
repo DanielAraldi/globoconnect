@@ -66,6 +66,15 @@ export const GoBackButton = styled.Pressable`
   left: ${spacings[4]}px;
 `;
 
+export const ButtonCameraContent = styled.View`
+  flex-direction: row;
+
+  width: 100%;
+
+  justify-content: center;
+  align-items: center;
+`;
+
 export const RecordButtonWrapper = styled(Animated.View)`
   width: ${spacings[12] + spacings[4]}px;
   height: ${spacings[12] + spacings[4]}px;
@@ -80,4 +89,15 @@ export const RecordButtonWrapper = styled(Animated.View)`
 export const RecordButton = styled.TouchableOpacity`
   width: 100%;
   height: 100%;
+`;
+
+export const GalleryButton = styled.Pressable`
+  position: absolute;
+  right: ${spacings[0]}px;
+
+  width: ${spacings[10]}px;
+  height: ${spacings[10]}px;
+
+  justify-content: center;
+  align-items: center;
 `;

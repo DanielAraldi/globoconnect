@@ -37,6 +37,12 @@
         {
           "cameraPermission": "O $(PRODUCT_NAME) precisa ter acesso a sua câmera para gravar vídeos."
         }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "O $(PRODUCT_NAME) precisa ter acesso a sua galeria para postar vídeos."
+        }
       ]
     ]
   }

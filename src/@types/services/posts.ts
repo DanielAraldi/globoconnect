@@ -17,7 +17,6 @@ export interface PostProps {
   video: string;
   likes: number;
   comments: number;
-  shareds: number;
   liked: boolean;
   user: PostUser;
 }
