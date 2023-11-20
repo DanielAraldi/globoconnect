@@ -1,4 +1,12 @@
 import { PropsWithChildren } from 'react';
 import { ModalProps } from 'react-native';
 
-export interface ModalViewProps extends PropsWithChildren<ModalProps> {}
+export type ModalViewVariant = 'normal' | 'full' | 'logout';
+
+export type ModalViewStyleProps = {
+  variant: 'normal' | 'full' | 'logout';
+};
+
+export interface ModalViewProps extends PropsWithChildren<ModalProps> {
+  variant?: 'normal' | 'full' | 'logout';
+}

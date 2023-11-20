@@ -7,7 +7,7 @@ import { Share, TouchableOpacity } from 'react-native';
 import { PublishProps } from '../../@types';
 import { theme } from '../../config';
 import { Avatar } from '../Avatar';
-import { EmptyList } from '../EmptyList';
+import { EmptyMessage } from '../EmptyMessage';
 import { Typography } from '../Typography';
 import { UserComment } from '../UserComment';
 import {
@@ -136,7 +136,7 @@ export function Publish(props: PublishProps) {
           <If condition={comments.length}>
             <Then>{renderComments}</Then>
             <Else>
-              <EmptyList
+              <EmptyMessage
                 variant='comments'
                 message={'Ainda não há comentário\nnesta publicação'}
               />

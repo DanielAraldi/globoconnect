@@ -1,22 +1,32 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Linking } from 'react-native';
 
-import { EmptyListIcon, EmptyListProps } from '../../@types';
+import {
+  EmptyMessageIcon,
+  EmptyMessageProps,
+  EmptyMessageVariant,
+} from '../../@types';
 import { theme } from '../../config';
 import { Typography } from '../Typography';
 import { Container } from './styles';
 
-export function EmptyList(props: EmptyListProps) {
+export function EmptyMessage(props: EmptyMessageProps) {
   const { message, variant } = props;
 
   const { colors, spacings } = theme;
 
-  const icons: Record<EmptyListProps['variant'], EmptyListIcon> = {
+  const icons: Record<EmptyMessageVariant, EmptyMessageIcon> = {
     comments: 'comment-off-outline',
     posts: 'post',
+    camera: 'camera-off-outline',
   };
 
+  async function goToSettings(): Promise<void> {
+    if (variant === 'camera') await Linking.openSettings();
+  }
+
   return (
-    <Container>
+    <Container onPress={goToSettings}>
       <MaterialCommunityIcons
         name={icons[variant]}
         color={colors.light.main}

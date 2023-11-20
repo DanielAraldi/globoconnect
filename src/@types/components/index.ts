@@ -1,5 +1,5 @@
 export * from './Avatar';
-export * from './EmptyList';
+export * from './EmptyMessage';
 export * from './GenericButton';
 export * from './Header';
 export * from './ModalView';

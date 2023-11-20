@@ -1,6 +1,6 @@
 export * from './Avatar';
 export * from './Background';
-export * from './EmptyList';
+export * from './EmptyMessage';
 export * from './GenericButton';
 export * from './Header';
 export * from './Load';

@@ -1,4 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { When } from 'react-if';
 import { Modal } from 'react-native';
 
 import { ModalViewProps } from '../../@types';
@@ -7,7 +8,7 @@ import { Background } from '../Background';
 import { Bar, CloseButton, Container, Overlay } from './styles';
 
 export function ModalView(props: ModalViewProps) {
-  const { children, onDismiss, ...rest } = props;
+  const { variant = 'normal', children, onDismiss, ...rest } = props;
 
   const { spacings, colors } = theme;
 
@@ -24,17 +25,19 @@ export function ModalView(props: ModalViewProps) {
       {...rest}
     >
       <Overlay>
-        <Container>
+        <Container variant={variant}>
           <Background>
-            <Bar />
+            <When condition={variant !== 'full'}>
+              <Bar />
 
-            <CloseButton onPress={handleCloseModal}>
-              <MaterialCommunityIcons
-                name='close-circle'
-                size={spacings[6]}
-                color={colors.light.main}
-              />
-            </CloseButton>
+              <CloseButton onPress={handleCloseModal}>
+                <MaterialCommunityIcons
+                  name='close-circle'
+                  size={spacings[6]}
+                  color={colors.light.main}
+                />
+              </CloseButton>
+            </When>
 
             {children}
           </Background>

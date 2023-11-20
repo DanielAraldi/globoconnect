@@ -1,4 +1,4 @@
-export type HeaderVariant = 'logo' | 'profile';
+export type HeaderVariant = 'logout' | 'only-logo' | 'profile';
 
 export interface HeaderProps {
   variant: HeaderVariant;

@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#000000"
-      }
+      },
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -29,6 +30,12 @@
         "expo-av",
         {
           "microphonePermission": "O $(PRODUCT_NAME) precisa ter acesso ao seu microfone."
+        }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "O $(PRODUCT_NAME) precisa ter acesso a sua câmera para gravar vídeos."
         }
       ]
     ]

@@ -6,7 +6,7 @@ import { PostProps } from '../../../@types';
 import {
   Avatar,
   Background,
-  EmptyList,
+  EmptyMessage,
   Header,
   ModalView,
   Publish,
@@ -158,7 +158,7 @@ export function Profile() {
             contentContainerStyle={{ flexGrow: 1 }}
             numColumns={2}
             ListEmptyComponent={() => (
-              <EmptyList
+              <EmptyMessage
                 variant='posts'
                 message={'Não há publiações\nfeitas no momento'}
               />

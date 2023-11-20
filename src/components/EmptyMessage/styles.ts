@@ -4,7 +4,7 @@ import { theme } from '../../config';
 
 const { spacings } = theme;
 
-export const Container = styled.View`
+export const Container = styled.Pressable`
   flex: 1;
 
   width: 100%;

@@ -10,7 +10,8 @@ export function TextField(props: TextFieldProps) {
   const { colors } = theme;
 
   const {
-    variant = 'text',
+    variant = 'primary',
+    type = 'text',
     isLoading = false,
     editable = true,
     marginBottom,
@@ -18,13 +19,13 @@ export function TextField(props: TextFieldProps) {
     ...rest
   } = props;
 
-  const isPassword = variant === 'password';
+  const isPassword = type === 'password';
 
   const [isFocused, setIsFocused] = useState<boolean>(false);
   const [isSecureText, setIsSecureText] = useState<boolean>(isPassword);
 
   const isEditable = editable || !isLoading;
-  const keyboardType = variant === 'email' ? 'email-address' : 'default';
+  const keyboardType = type === 'email' ? 'email-address' : 'default';
 
   function handleIconColor(): string {
     if (!isEditable) return colors.light.overlay['50p'];
@@ -48,6 +49,7 @@ export function TextField(props: TextFieldProps) {
 
   return (
     <Container
+      variant={variant}
       isFocused={isFocused}
       isDisabled={!isEditable}
       marginBottom={marginBottom}

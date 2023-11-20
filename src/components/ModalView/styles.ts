@@ -1,5 +1,6 @@
 import styled from 'styled-components/native';
 
+import { ModalViewStyleProps } from '../../@types';
 import { theme } from '../../config';
 
 const { colors, spacings } = theme;
@@ -10,10 +11,10 @@ export const Overlay = styled.View`
   background-color: ${colors.background.overlay['50p']};
 `;
 
-export const Container = styled.View`
+export const Container = styled.View<ModalViewStyleProps>`
   flex: 1;
 
-  margin-top: ${spacings[14]}px;
+  margin-top: ${({ variant }) => (variant === 'full' ? 0 : spacings[14])}px;
 `;
 
 export const Bar = styled.View`

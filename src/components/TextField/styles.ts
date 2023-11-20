@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
 import { TextFieldStyleProps } from '../../@types';
 import { theme } from '../../config';
@@ -18,13 +18,26 @@ export const Container = styled.View<TextFieldStyleProps>`
 
   background-color: ${colors.surface};
 
-  border-radius: ${borderRadius.small}px;
-  border-color: ${({ isFocused, isDisabled }) => {
-    if (isDisabled) return colors.light.overlay['5p'];
-    if (isFocused) return colors.light.overlay['50p'];
-    return colors.light.overlay['15p'];
-  }};
-  border-width: 1px;
+  border-radius: ${({ variant }) =>
+    variant === 'primary' ? borderRadius.small : 0}px;
+  ${({ variant, isFocused, isDisabled }) =>
+    variant === 'primary'
+      ? css`
+          border-color: ${() => {
+            if (isDisabled) return colors.light.overlay['5p'];
+            if (isFocused) return colors.light.overlay['50p'];
+            return colors.light.overlay['15p'];
+          }};
+          border-width: 1px;
+        `
+      : css`
+          border-bottom-color: ${() => {
+            if (isDisabled) return colors.light.overlay['5p'];
+            if (isFocused) return colors.light.overlay['50p'];
+            return colors.light.overlay['15p'];
+          }};
+          border-bottom-width: 1px;
+        `}
 `;
 
 export const Input = styled.TextInput<Pick<TextFieldStyleProps, 'isDisabled'>>`

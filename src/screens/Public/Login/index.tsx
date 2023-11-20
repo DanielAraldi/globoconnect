@@ -53,14 +53,14 @@ export function Login() {
 
             <InputContent>
               <TextField
-                variant='email'
+                type='email'
                 returnKeyType='next'
                 placeholder='Email'
                 onChangeText={text => setUser({ ...user, email: text })}
               />
 
               <TextField
-                variant='password'
+                type='password'
                 marginTop={spacings[3]}
                 returnKeyType='go'
                 placeholder='Senha'

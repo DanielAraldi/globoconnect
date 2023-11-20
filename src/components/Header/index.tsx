@@ -31,10 +31,10 @@ export function Header({ variant }: HeaderProps) {
         />
       </TypographyWrapper>
 
-      <When condition={isProfile}>
+      <When condition={variant !== 'only-logo'}>
         <TouchableOpacity activeOpacity={0.85} onPress={goToAddVideo}>
           <Feather
-            name='plus-circle'
+            name={isProfile ? 'plus-circle' : 'log-out'}
             size={spacings[5]}
             color={colors.light.main}
           />
