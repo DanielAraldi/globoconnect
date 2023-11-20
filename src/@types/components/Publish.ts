@@ -1,4 +1,4 @@
-import { Comment } from '../services';
+import { CommentProps } from '../services';
 
 export type PublishVariant = 'feed' | 'unique';
 
@@ -10,7 +10,7 @@ export interface PublishProps {
   name: string;
   nickname: string;
   liked: boolean;
-  comments: Comment[];
+  comments: CommentProps[];
   url: string;
   description: string;
   variant?: 'feed' | 'unique';

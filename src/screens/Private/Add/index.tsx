@@ -20,7 +20,7 @@ import {
   Typography,
 } from '../../../components';
 import { theme } from '../../../config';
-import { PostService } from '../../../services';
+import { usePosts } from '../../../hooks';
 import {
   ButtonCameraContent,
   ButtonContent,
@@ -36,10 +36,10 @@ import {
 
 export function Add() {
   const navigation = useNavigation();
+  const { isLoadingPosts, createPost } = usePosts();
 
   const [isOpenModalCamera, setIsOpenModalCamera] = useState<boolean>(false);
-  const [isLoadingVideo, setisLoadingVideo] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingVideo, setIsLoadingVideo] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const [videoUri, setVideoUri] = useState<string>('');
 
@@ -105,7 +105,7 @@ export function Add() {
   }
 
   async function handleGalleryVideo(): Promise<void> {
-    setisLoadingVideo(true);
+    setIsLoadingVideo(true);
 
     const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
       quality: 1,
@@ -122,12 +122,11 @@ export function Add() {
       setVideoUri(assets[0].uri);
       handleCloseModal();
     }
-    setisLoadingVideo(false);
+    setIsLoadingVideo(false);
   }
 
   async function onSubmit(): Promise<void> {
-    setIsLoading(true);
-    const response = await PostService.create({
+    const response = await createPost({
       comments: 0,
       liked: false,
       likes: 0,
@@ -143,7 +142,6 @@ export function Add() {
     if (response) goToHome();
     setTitle('');
     setVideoUri('');
-    setIsLoading(false);
   }
 
   useFocusEffect(
@@ -170,7 +168,7 @@ export function Add() {
               placeholder='Título'
               marginBottom={spacings[4]}
               onChangeText={setTitle}
-              isLoading={isLoading}
+              isLoading={isLoadingPosts}
             />
           </InputContent>
 
@@ -186,7 +184,7 @@ export function Add() {
               type='primary'
               text='Adicionar vídeo'
               onPress={() => setIsOpenModalCamera(true)}
-              disabled={isLoading}
+              disabled={isLoadingPosts}
             />
 
             <GenericButton
@@ -194,7 +192,7 @@ export function Add() {
               text='Postar'
               onPress={onSubmit}
               disabled={isDisabledSumbit}
-              isLoading={isLoading}
+              isLoading={isLoadingPosts}
             />
           </ButtonContent>
         </Container>

@@ -1,6 +1,6 @@
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
-import { ResizeMode } from 'expo-av';
-import { useMemo } from 'react';
+import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av';
+import { useMemo, useRef } from 'react';
 import { Else, If, Then, When } from 'react-if';
 import { Share, TouchableOpacity } from 'react-native';
 
@@ -31,6 +31,8 @@ export function Publish(props: PublishProps) {
     variant = 'feed',
   } = props;
 
+  const videoRef = useRef<Video>(null);
+
   const { colors, spacings } = theme;
 
   const isFeed = variant === 'feed';
@@ -47,6 +49,12 @@ export function Publish(props: PublishProps) {
       url,
       title: 'Venha fazer parte do GloboConnect!',
     });
+  }
+
+  async function handleLoopVideo(status: AVPlaybackStatus): Promise<void> {
+    if (status.isLoaded && videoRef.current) {
+      await videoRef.current.setIsLoopingAsync(true);
+    }
   }
 
   const renderComments = useMemo(
@@ -91,12 +99,13 @@ export function Publish(props: PublishProps) {
 
       <PostVideoWrapper variant={variant}>
         <PostVideo
+          ref={videoRef}
           source={{ uri: url }}
-          useNativeControls={false}
-          resizeMode={ResizeMode.COVER}
-          isLooping
-          shouldPlay
           volume={1}
+          resizeMode={ResizeMode.COVER}
+          useNativeControls
+          shouldPlay
+          onLoad={handleLoopVideo}
         />
       </PostVideoWrapper>
 

@@ -1,22 +1,25 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FlatList, View } from 'react-native';
 
-import { PostProps } from '../../../@types';
+import { CommentProps, PostProps } from '../../../@types';
 import {
   Avatar,
   Background,
   EmptyMessage,
   Header,
+  Load,
   ModalView,
   Publish,
   Thumbnail,
   Typography,
 } from '../../../components';
 import { theme } from '../../../config';
-import serverJson from '../../../services/mock/server.json';
+import { usePosts } from '../../../hooks';
+import { CommentService } from '../../../services';
 import {
   Container,
+  LoadContent,
   PostContent,
   PostHeader,
   SocialContent,
@@ -24,7 +27,11 @@ import {
 } from './styles';
 
 export function Profile() {
+  const { posts, isLoadingPosts, loadPostByUserId } = usePosts();
+
   const [isOpenPost, setIsOpenPost] = useState<boolean>(false);
+  const [comments, setComments] = useState<CommentProps[]>([]);
+  const [postSelected, setPostSelected] = useState<PostProps>({} as PostProps);
 
   const { colors, spacings } = theme;
 
@@ -55,14 +62,32 @@ export function Profile() {
     setIsOpenPost(false);
   }
 
+  async function fetchComments(postId: string): Promise<void> {
+    const response = await CommentService.loadByPostId(postId);
+    setComments(response);
+  }
+
+  async function handleSelectPost(post: PostProps): Promise<void> {
+    await fetchComments(post.id);
+    setPostSelected(post);
+    setIsOpenPost(true);
+  }
+
   const keyExtractor = useCallback((item: PostProps) => item.id.toString(), []);
 
   const renderItem = useCallback(
     ({ item }: RenderItem<PostProps>) => (
-      <Thumbnail url={item.video} onPress={() => setIsOpenPost(true)} />
+      <Thumbnail
+        url={item.video}
+        onPress={async () => await handleSelectPost(item)}
+      />
     ),
     [],
   );
+
+  useEffect(() => {
+    loadPostByUserId('d697a33e-6626-4edf-b3e7-f2df27007632');
+  }, []);
 
   return (
     <Background>
@@ -152,17 +177,23 @@ export function Profile() {
 
         <PostContent>
           <FlatList
-            data={[...serverJson.posts]}
+            data={posts}
             keyExtractor={keyExtractor}
             renderItem={renderItem}
             contentContainerStyle={{ flexGrow: 1 }}
             numColumns={2}
-            ListEmptyComponent={() => (
-              <EmptyMessage
-                variant='posts'
-                message={'Não há publiações\nfeitas no momento'}
-              />
-            )}
+            ListEmptyComponent={() =>
+              isLoadingPosts ? (
+                <LoadContent>
+                  <Load />
+                </LoadContent>
+              ) : (
+                <EmptyMessage
+                  variant='posts'
+                  message={'Não há publiações\nfeitas no momento'}
+                />
+              )
+            }
           />
         </PostContent>
       </Container>
@@ -173,13 +204,13 @@ export function Profile() {
         onRequestClose={handleCloseModal}
       >
         <Publish
-          url={serverJson.posts[0].video}
-          nickname={serverJson.posts[0].user.nickname}
-          description={serverJson.posts[0].title}
-          comments={serverJson.comments}
+          url={postSelected?.video || ''}
+          nickname={postSelected?.user?.nickname || ''}
+          description={postSelected?.title || ''}
+          comments={comments}
           name={'Diego 3g'}
           variant='unique'
-          liked
+          liked={postSelected?.liked || false}
         />
       </ModalView>
     </Background>

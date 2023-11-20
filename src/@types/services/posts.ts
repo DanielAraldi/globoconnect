@@ -4,7 +4,7 @@ export interface PostUser {
   avatarUrl: string;
 }
 
-export interface Comment {
+export interface CommentProps {
   id: string;
   postId: number;
   comment: string;
@@ -23,4 +23,11 @@ export interface PostProps {
 
 export interface PostServiceProps {
   create(props: Omit<PostProps, 'id'>): Promise<boolean>;
+  loadAll(): Promise<PostProps[]>;
+  loadById(postId: string): Promise<PostProps | null>;
+  loadAllByUserId(userId: string): Promise<PostProps[]>;
+}
+
+export interface CommentServiceProps {
+  loadByPostId(postId: string): Promise<CommentProps[]>;
 }

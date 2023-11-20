@@ -53,3 +53,9 @@ export const PostContent = styled.View`
 
   width: 100%;
 `;
+
+export const LoadContent = styled.View`
+  flex: 1;
+
+  justify-content: center;
+`;

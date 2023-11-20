@@ -11,6 +11,7 @@ import { SafeAreaView, StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { theme } from './src/config';
+import { PostProvider } from './src/hooks';
 import { Routes } from './src/routes';
 import { getStatusBarHeight } from './src/utils';
 
@@ -42,7 +43,9 @@ export default function App() {
           translucent
         />
 
-        <Routes />
+        <PostProvider>
+          <Routes />
+        </PostProvider>
       </SafeAreaView>
     </SafeAreaProvider>
   );
