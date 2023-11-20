@@ -4,7 +4,7 @@ import {
   useFocusEffect,
   useNavigation,
 } from '@react-navigation/native';
-import { Camera as ExpoCamera } from 'expo-camera';
+import { Camera as ExpoCamera, VideoQuality } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Else, If, Then } from 'react-if';
@@ -25,6 +25,7 @@ import {
   ButtonCameraContent,
   ButtonContent,
   Camera,
+  CameraOverlay,
   Container,
   GalleryButton,
   GoBackButton,
@@ -37,6 +38,7 @@ export function Add() {
   const navigation = useNavigation();
 
   const [isOpenModalCamera, setIsOpenModalCamera] = useState<boolean>(false);
+  const [isLoadingVideo, setisLoadingVideo] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const [videoUri, setVideoUri] = useState<string>('');
@@ -93,7 +95,7 @@ export function Add() {
       const { uri } = await cameraRef.current.recordAsync({
         maxDuration: ONE_MINUTE,
         mute: false,
-        quality: '16:9',
+        quality: VideoQuality['1080p'],
       });
 
       setVideoUri(uri);
@@ -103,6 +105,8 @@ export function Add() {
   }
 
   async function handleGalleryVideo(): Promise<void> {
+    setisLoadingVideo(true);
+
     const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
       quality: 1,
       selectionLimit: 1,
@@ -115,10 +119,10 @@ export function Add() {
     });
 
     if (!canceled && assets) {
-      const [asset] = assets;
-      setVideoUri(asset.uri);
+      setVideoUri(assets[0].uri);
       handleCloseModal();
     }
+    setisLoadingVideo(false);
   }
 
   async function onSubmit(): Promise<void> {
@@ -204,31 +208,40 @@ export function Add() {
         <If condition={isAllowed}>
           <Then>
             <Camera ref={cameraRef}>
-              <GoBackButton onPress={handleCloseModal}>
-                <Feather
-                  name='arrow-left'
-                  size={spacings[6]}
-                  color={colors.light.main}
-                />
-              </GoBackButton>
-
-              <ButtonCameraContent>
-                <RecordButtonWrapper style={animationStyle}>
-                  <RecordButton
-                    activeOpacity={0.85}
-                    onLongPress={handleRecordVideo}
-                    onPressOut={handleOnPressOut}
-                  />
-                </RecordButtonWrapper>
-
-                <GalleryButton onPress={handleGalleryVideo}>
+              <CameraOverlay isLoading={isLoadingVideo}>
+                <GoBackButton
+                  onPress={handleCloseModal}
+                  disabled={isLoadingVideo}
+                >
                   <Feather
-                    name='image'
+                    name='arrow-left'
+                    size={spacings[6]}
                     color={colors.light.main}
-                    size={spacings[10]}
                   />
-                </GalleryButton>
-              </ButtonCameraContent>
+                </GoBackButton>
+
+                <ButtonCameraContent>
+                  <RecordButtonWrapper style={animationStyle}>
+                    <RecordButton
+                      activeOpacity={0.85}
+                      onLongPress={handleRecordVideo}
+                      onPressOut={handleOnPressOut}
+                      disabled={isLoadingVideo}
+                    />
+                  </RecordButtonWrapper>
+
+                  <GalleryButton
+                    onPress={handleGalleryVideo}
+                    disabled={isLoadingVideo}
+                  >
+                    <Feather
+                      name='image'
+                      color={colors.light.main}
+                      size={spacings[10]}
+                    />
+                  </GalleryButton>
+                </ButtonCameraContent>
+              </CameraOverlay>
             </Camera>
           </Then>
           <Else>

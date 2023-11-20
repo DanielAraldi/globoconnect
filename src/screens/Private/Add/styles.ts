@@ -2,6 +2,7 @@ import { Camera as ExpoCamera, CameraType } from 'expo-camera';
 import { Animated } from 'react-native';
 import styled from 'styled-components/native';
 
+import { CameraOverlayStyleProps } from '../../../@types';
 import { theme } from '../../../config';
 import { getStatusBarHeight } from '../../../utils';
 
@@ -51,12 +52,20 @@ export const Camera = styled(ExpoCamera).attrs({
 
   width: 100%;
   height: 100%;
+`;
+
+export const CameraOverlay = styled.View<CameraOverlayStyleProps>`
+  width: 100%;
+  height: 100%;
 
   padding: ${spacings[4]}px;
   padding-bottom: ${spacings[12]}px;
 
   justify-content: flex-end;
   align-items: center;
+
+  background-color: ${({ isLoading }) =>
+    isLoading ? colors.background.overlay['50p'] : colors.transparent};
 `;
 
 export const GoBackButton = styled.Pressable`
