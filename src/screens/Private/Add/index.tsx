@@ -1,12 +1,15 @@
 import { Feather } from '@expo/vector-icons';
-import { useFocusEffect } from '@react-navigation/native';
+import {
+  CommonActions,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import { Camera as ExpoCamera } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Else, If, Then } from 'react-if';
 import { Animated, Keyboard, TouchableWithoutFeedback } from 'react-native';
 
-import { PostProps } from '../../../@types';
 import {
   Background,
   EmptyMessage,
@@ -17,6 +20,7 @@ import {
   Typography,
 } from '../../../components';
 import { theme } from '../../../config';
+import { PostService } from '../../../services';
 import {
   ButtonCameraContent,
   ButtonContent,
@@ -30,8 +34,12 @@ import {
 } from './styles';
 
 export function Add() {
+  const navigation = useNavigation();
+
   const [isOpenModalCamera, setIsOpenModalCamera] = useState<boolean>(false);
-  const [post, setPost] = useState<PostProps>({} as PostProps);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>('');
+  const [videoUri, setVideoUri] = useState<string>('');
 
   const [permissionCamera] = ExpoCamera.useCameraPermissions();
   const [permissionLibrary] = ImagePicker.useCameraPermissions();
@@ -40,9 +48,9 @@ export function Add() {
   const fadeAnimation = useRef(new Animated.Value(1)).current;
 
   const { spacings, colors } = theme;
-  const isDisabledSumbit = !post?.video || !post?.title;
+  const isDisabledSumbit = !videoUri || !title;
   const isAllowed = !!permissionCamera?.granted && !!permissionLibrary?.granted;
-  const videoRecordingMessage = post?.video
+  const videoRecordingMessage = videoUri
     ? 'Seu vídeo foi gravado com sucesso! 📷'
     : 'Ei, bora postar um vídeo!';
   const animationStyle = {
@@ -51,6 +59,14 @@ export function Add() {
 
   function handleCloseModal(): void {
     setIsOpenModalCamera(false);
+  }
+
+  function goToHome(): void {
+    navigation.dispatch(
+      CommonActions.navigate({
+        name: 'Home',
+      }),
+    );
   }
 
   async function handleRequestPermission(): Promise<void> {
@@ -80,7 +96,7 @@ export function Add() {
         quality: '16:9',
       });
 
-      setPost({ ...post, video: uri, comments: 0, likes: 0, liked: false });
+      setVideoUri(uri);
     }
 
     handleCloseModal();
@@ -100,15 +116,30 @@ export function Add() {
 
     if (!canceled && assets) {
       const [asset] = assets;
-      setPost({
-        ...post,
-        video: asset.uri,
-        comments: 0,
-        likes: 0,
-        liked: false,
-      });
+      setVideoUri(asset.uri);
       handleCloseModal();
     }
+  }
+
+  async function onSubmit(): Promise<void> {
+    setIsLoading(true);
+    const response = await PostService.create({
+      comments: 0,
+      liked: false,
+      likes: 0,
+      title,
+      video: videoUri,
+      user: {
+        id: 'd697a33e-6626-4edf-b3e7-f2df27007632',
+        avatarUrl: 'https://avatars.githubusercontent.com/u/2254731?v=4',
+        nickname: 'diego3g',
+      },
+    });
+
+    if (response) goToHome();
+    setTitle('');
+    setVideoUri('');
+    setIsLoading(false);
   }
 
   useFocusEffect(
@@ -129,11 +160,13 @@ export function Add() {
 
           <InputContent>
             <TextField
+              value={title}
               variant='secondary'
               returnKeyType='next'
               placeholder='Título'
               marginBottom={spacings[4]}
-              onChangeText={text => setPost({ ...post, title: text })}
+              onChangeText={setTitle}
+              isLoading={isLoading}
             />
           </InputContent>
 
@@ -149,12 +182,15 @@ export function Add() {
               type='primary'
               text='Adicionar vídeo'
               onPress={() => setIsOpenModalCamera(true)}
+              disabled={isLoading}
             />
 
             <GenericButton
               type='primary'
               text='Postar'
+              onPress={onSubmit}
               disabled={isDisabledSumbit}
+              isLoading={isLoading}
             />
           </ButtonContent>
         </Container>

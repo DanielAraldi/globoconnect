@@ -13,7 +13,7 @@ export function TextField(props: TextFieldProps) {
     variant = 'primary',
     type = 'text',
     isLoading = false,
-    editable = true,
+    editable,
     marginBottom,
     marginTop,
     ...rest

@@ -1,22 +1,26 @@
 export interface PostUser {
-  id: number;
+  id: string;
   nickname: string;
   avatarUrl: string;
 }
 
 export interface Comment {
-  id: number;
+  id: string;
   postId: number;
   comment: string;
   user: PostUser;
 }
 
 export interface PostProps {
-  id: number;
+  id: string;
   title: string;
   video: string;
   likes: number;
   comments: number;
   liked: boolean;
   user: PostUser;
+}
+
+export interface PostServiceProps {
+  create(props: Omit<PostProps, 'id'>): Promise<boolean>;
 }
