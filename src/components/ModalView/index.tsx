@@ -8,9 +8,19 @@ import { Background } from '../Background';
 import { Bar, CloseButton, Container, Overlay } from './styles';
 
 export function ModalView(props: ModalViewProps) {
-  const { variant = 'normal', children, onDismiss, ...rest } = props;
+  const {
+    variant = 'normal',
+    isDisabledClose = false,
+    children,
+    onDismiss,
+    ...rest
+  } = props;
 
   const { spacings, colors } = theme;
+
+  const iconColor = isDisabledClose
+    ? colors.light.overlay['15p']
+    : colors.light.main;
 
   function handleCloseModal(): void {
     if (onDismiss) return onDismiss();
@@ -30,11 +40,14 @@ export function ModalView(props: ModalViewProps) {
             <When condition={variant !== 'full'}>
               <Bar />
 
-              <CloseButton onPress={handleCloseModal}>
+              <CloseButton
+                onPress={handleCloseModal}
+                disabled={isDisabledClose}
+              >
                 <MaterialCommunityIcons
                   name='close-circle'
                   size={spacings[6]}
-                  color={colors.light.main}
+                  color={iconColor}
                 />
               </CloseButton>
             </When>

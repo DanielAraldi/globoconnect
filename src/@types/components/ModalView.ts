@@ -9,4 +9,5 @@ export interface ModalViewStyleProps {
 
 export interface ModalViewProps extends PropsWithChildren<ModalProps> {
   variant?: 'normal' | 'full' | 'logout';
+  isDisabledClose?: boolean;
 }
