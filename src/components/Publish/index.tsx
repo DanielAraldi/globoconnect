@@ -1,6 +1,5 @@
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
-import { AVPlaybackStatus, ResizeMode, Video } from 'expo-av';
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { Else, If, Then, When } from 'react-if';
 import { Share, TouchableOpacity } from 'react-native';
 
@@ -10,11 +9,11 @@ import { Avatar } from '../Avatar';
 import { EmptyMessage } from '../EmptyMessage';
 import { Typography } from '../Typography';
 import { UserComment } from '../UserComment';
+import { Video } from '../Video';
 import {
   Container,
   DescriptionWrapper,
   PostBar,
-  PostVideo,
   PostVideoWrapper,
   UserBar,
   Username,
@@ -31,11 +30,12 @@ export function Publish(props: PublishProps) {
     variant = 'feed',
   } = props;
 
-  const videoRef = useRef<Video>(null);
-
   const { colors, spacings } = theme;
 
   const isFeed = variant === 'feed';
+  const internalScrollViewStyle = {
+    paddingBottom: isFeed ? 0 : spacings[9],
+  };
   const commonIconProps = {
     color: colors.light.main,
     size: spacings[5],
@@ -51,12 +51,6 @@ export function Publish(props: PublishProps) {
     });
   }
 
-  async function handleLoopVideo(status: AVPlaybackStatus): Promise<void> {
-    if (status.isLoaded && videoRef.current) {
-      await videoRef.current.setIsLoopingAsync(true);
-    }
-  }
-
   const renderComments = useMemo(
     () =>
       comments.map(item => (
@@ -70,9 +64,7 @@ export function Publish(props: PublishProps) {
   );
 
   return (
-    <Container
-      contentContainerStyle={{ paddingBottom: isFeed ? 0 : spacings[9] }}
-    >
+    <Container contentContainerStyle={internalScrollViewStyle}>
       <UserBar>
         <Username>
           <Avatar variant='post' />
@@ -98,15 +90,7 @@ export function Publish(props: PublishProps) {
       </UserBar>
 
       <PostVideoWrapper variant={variant}>
-        <PostVideo
-          ref={videoRef}
-          source={{ uri: url }}
-          volume={1}
-          resizeMode={ResizeMode.COVER}
-          useNativeControls={false}
-          shouldPlay
-          onLoad={handleLoopVideo}
-        />
+        <Video uri={url} />
       </PostVideoWrapper>
 
       <When condition={!isFeed}>

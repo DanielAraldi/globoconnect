@@ -1,4 +1,3 @@
-import { Video } from 'expo-av';
 import styled, { css } from 'styled-components/native';
 
 import { PublishStyleProps } from '../../@types';
@@ -47,11 +46,6 @@ export const PostVideoWrapper = styled.View<PublishStyleProps>`
     `}
 
   background-color: ${colors.light.overlay['10p']};
-`;
-
-export const PostVideo = styled(Video)`
-  width: 100%;
-  height: 100%;
 `;
 
 export const PostBar = styled.View`

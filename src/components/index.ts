@@ -10,3 +10,4 @@ export * from './TextField';
 export * from './Thumbnail';
 export * from './Typography';
 export * from './UserComment';
+export * from './Video';
