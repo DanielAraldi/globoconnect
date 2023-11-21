@@ -56,7 +56,8 @@ export function Add() {
   const fadeAnimation = useRef(new Animated.Value(1)).current;
 
   const { spacings, colors } = theme;
-  const isDisabledSumbit = !uri || !title;
+
+  const isDisabledSumbit = !uri || !title.trim() || !description.trim();
   const isAllowed = !!permissionCamera?.granted && !!permissionLibrary?.granted;
   const animationStyle = {
     opacity: fadeAnimation,

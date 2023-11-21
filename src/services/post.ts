@@ -39,7 +39,11 @@ export const PostService: PostServiceProps = {
 
   async loadAllByUserId(userId: string): Promise<PostProps[]> {
     try {
-      const { data } = await api.get<PostProps[]>(`/posts?user.id=${userId}`);
+      const { data } = await api.get<PostProps[]>('/posts', {
+        params: {
+          'user.id': userId,
+        },
+      });
       return data.reverse();
     } catch (error) {
       return [];

@@ -102,7 +102,11 @@ export function Publish(props: PublishProps) {
         >
           <If condition={liked}>
             <Then>
-              <MaterialCommunityIcons name='heart' {...commonIconProps} />
+              <MaterialCommunityIcons
+                name='heart'
+                size={spacings[5]}
+                color={colors.primary}
+              />
             </Then>
             <Else>
               <Feather name='heart' {...commonIconProps} />

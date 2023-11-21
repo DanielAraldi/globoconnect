@@ -20,7 +20,7 @@ export function ModalView(props: ModalViewProps) {
 
   const iconColor = isDisabledClose
     ? colors.light.overlay['15p']
-    : colors.light.main;
+    : colors.primary;
 
   function handleCloseModal(): void {
     if (onDismiss) return onDismiss();
