@@ -7,29 +7,40 @@ const PostContext = createContext({} as PostContextData);
 
 export function PostProvider({ children }: Required<PropsWithChildren>) {
   const [isLoadingPosts, setIsLoadingPosts] = useState<boolean>(false);
-  const [posts, setPosts] = useState<PostProps[]>([]);
+  const [allPosts, setAllPosts] = useState<PostProps[]>([]);
+  const [postsOfUser, setPostsOfUser] = useState<PostProps[]>([]);
 
   async function loadPostByUserId(id: string): Promise<void> {
     setIsLoadingPosts(true);
-    const response = await PostService.loadAllByUserId(id);
-    setPosts(response);
+    const posts = await PostService.loadAllByUserId(id);
+    setPostsOfUser(posts);
+    setIsLoadingPosts(false);
+  }
+
+  async function loadAllPosts(): Promise<void> {
+    setIsLoadingPosts(true);
+    const posts = await PostService.loadAll();
+    setAllPosts(posts);
     setIsLoadingPosts(false);
   }
 
   async function createPost(props: Omit<PostProps, 'id'>): Promise<boolean> {
     setIsLoadingPosts(true);
-    const response = await PostService.create(props);
+    const isCreated = await PostService.create(props);
     await loadPostByUserId(props.user.id);
+    await loadAllPosts();
     setIsLoadingPosts(false);
-    return response;
+    return isCreated;
   }
 
   return (
     <PostContext.Provider
       value={{
-        posts,
+        postsOfUser,
+        allPosts,
         isLoadingPosts,
         createPost,
+        loadAllPosts,
         loadPostByUserId,
       }}
     >

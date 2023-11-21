@@ -147,6 +147,7 @@ export function Add() {
         id: 'd697a33e-6626-4edf-b3e7-f2df27007632',
         avatarUrl: 'https://avatars.githubusercontent.com/u/2254731?v=4',
         nickname: 'diego3g',
+        name: 'Diego 3g',
       },
     });
 

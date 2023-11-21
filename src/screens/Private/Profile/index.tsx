@@ -10,13 +10,13 @@ import {
   Header,
   Load,
   ModalView,
-  Publish,
   Thumbnail,
   Typography,
 } from '../../../components';
 import { theme } from '../../../config';
 import { usePosts } from '../../../hooks';
 import { CommentService } from '../../../services';
+import { Post } from './Post';
 import {
   Container,
   LoadContent,
@@ -27,7 +27,7 @@ import {
 } from './styles';
 
 export function Profile() {
-  const { posts, isLoadingPosts, loadPostByUserId } = usePosts();
+  const { postsOfUser, isLoadingPosts, loadPostByUserId } = usePosts();
 
   const [isOpenPost, setIsOpenPost] = useState<boolean>(false);
   const [comments, setComments] = useState<CommentProps[]>([]);
@@ -177,11 +177,12 @@ export function Profile() {
 
         <PostContent>
           <FlatList
-            data={posts}
+            data={postsOfUser}
             keyExtractor={keyExtractor}
             renderItem={renderItem}
             contentContainerStyle={{ flexGrow: 1 }}
             numColumns={2}
+            viewabilityConfig={{ viewAreaCoveragePercentThreshold: 10 }}
             ListEmptyComponent={() =>
               isLoadingPosts ? (
                 <LoadContent>
@@ -203,15 +204,14 @@ export function Profile() {
         onDismiss={handleCloseModal}
         onRequestClose={handleCloseModal}
       >
-        <Publish
-          url={postSelected?.video}
+        <Post
+          avatarUrl={postSelected?.user?.avatarUrl}
+          comments={comments}
+          description={postSelected?.description}
+          name={postSelected?.user?.name}
           nickname={postSelected?.user?.nickname}
           title={postSelected?.title}
-          description={postSelected?.description}
-          comments={comments}
-          name={'Diego 3g'}
-          variant='unique'
-          liked={postSelected?.liked || false}
+          uri={postSelected?.video}
         />
       </ModalView>
     </Background>

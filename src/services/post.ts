@@ -18,7 +18,7 @@ export const PostService: PostServiceProps = {
   async loadAll(): Promise<PostProps[]> {
     try {
       const { data } = await api.get<PostProps[]>('/posts');
-      return data;
+      return data.reverse();
     } catch (error) {
       return [];
     }
@@ -40,9 +40,36 @@ export const PostService: PostServiceProps = {
   async loadAllByUserId(userId: string): Promise<PostProps[]> {
     try {
       const { data } = await api.get<PostProps[]>(`/posts?user.id=${userId}`);
-      return data;
+      return data.reverse();
     } catch (error) {
       return [];
+    }
+  },
+
+  async like(postId: string, currentLikes: number): Promise<boolean> {
+    try {
+      const { data } = await api.patch<PostProps>(`/posts/${postId}`, {
+        likes: currentLikes + 1,
+        liked: true,
+      });
+
+      return data.liked;
+    } catch (error) {
+      return false;
+    }
+  },
+
+  async deslike(postId: string, currentLikes: number): Promise<boolean> {
+    try {
+      const isZero = currentLikes === 0;
+      const { data } = await api.patch<PostProps>(`/posts/${postId}`, {
+        likes: isZero ? 0 : currentLikes - 1,
+        liked: false,
+      });
+
+      return data.liked;
+    } catch (error) {
+      return true;
     }
   },
 };

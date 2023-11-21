@@ -2,11 +2,12 @@ export interface PostUser {
   id: string;
   nickname: string;
   avatarUrl: string;
+  name: string;
 }
 
 export interface CommentProps {
   id: string;
-  postId: number;
+  postId: string;
   comment: string;
   user: PostUser;
 }
@@ -27,8 +28,11 @@ export interface PostServiceProps {
   loadAll(): Promise<PostProps[]>;
   loadById(postId: string): Promise<PostProps | null>;
   loadAllByUserId(userId: string): Promise<PostProps[]>;
+  like(postId: string, currentLikes: number): Promise<boolean>;
+  deslike(postId: string, currentLikes: number): Promise<boolean>;
 }
 
 export interface CommentServiceProps {
+  create(props: Omit<CommentProps, 'id'>): Promise<boolean>;
   loadByPostId(postId: string): Promise<CommentProps[]>;
 }
