@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useCallback, useEffect, useState } from 'react';
-import { FlatList, View } from 'react-native';
+import { FlatList, RefreshControl, View } from 'react-native';
 
 import { CommentProps, PostProps } from '../../../@types';
 import {
@@ -13,7 +13,7 @@ import {
   Thumbnail,
   Typography,
 } from '../../../components';
-import { theme } from '../../../config';
+import { ITENS_LIMIT_BY_PAGE, theme } from '../../../config';
 import { usePosts } from '../../../hooks';
 import { CommentService } from '../../../services';
 import { Post } from './Post';
@@ -30,10 +30,14 @@ export function Profile() {
   const { postsOfUser, isLoadingPosts, loadPostByUserId } = usePosts();
 
   const [isOpenPost, setIsOpenPost] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [comments, setComments] = useState<CommentProps[]>([]);
   const [postSelected, setPostSelected] = useState<PostProps>({} as PostProps);
 
   const { colors, spacings } = theme;
+
+  const itemsByPage = ITENS_LIMIT_BY_PAGE * currentPage;
+  const posts = postsOfUser.slice(0, itemsByPage);
 
   function handleValueDigits(value: string): string {
     return (
@@ -60,6 +64,12 @@ export function Profile() {
 
   function handleCloseModal(): void {
     setIsOpenPost(false);
+  }
+
+  function handleNextPage(): void {
+    if (postsOfUser.length > posts.length) {
+      setCurrentPage(currentPage + 1);
+    }
   }
 
   async function fetchComments(postId: string): Promise<void> {
@@ -177,12 +187,23 @@ export function Profile() {
 
         <PostContent>
           <FlatList
-            data={postsOfUser}
+            data={posts}
             keyExtractor={keyExtractor}
             renderItem={renderItem}
             contentContainerStyle={{ flexGrow: 1 }}
-            numColumns={2}
+            showsVerticalScrollIndicator={false}
             viewabilityConfig={{ viewAreaCoveragePercentThreshold: 10 }}
+            onEndReached={handleNextPage}
+            onEndReachedThreshold={0.1}
+            numColumns={2}
+            refreshControl={
+              <RefreshControl
+                refreshing={false}
+                onRefresh={() => setCurrentPage(1)}
+                tintColor={colors.primary}
+                size={spacings[2]}
+              />
+            }
             ListEmptyComponent={() =>
               isLoadingPosts ? (
                 <LoadContent>

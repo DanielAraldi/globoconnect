@@ -40,6 +40,20 @@ export function Home() {
 
   const postsByPage = ITENS_LIMIT_BY_PAGE * currentPostPage;
   const commentsByPage = ITENS_LIMIT_BY_PAGE * currentCommentsPage;
+  const showedPosts = allPosts.slice(0, postsByPage);
+  const showedComments = comments.slice(0, commentsByPage);
+
+  function handleNextPostsPage(): void {
+    if (allPosts.length > showedPosts.length) {
+      setCurrentPostPage(currentPostPage + 1);
+    }
+  }
+
+  function handleNextCommentsPage(): void {
+    if (comments.length > showedComments.length) {
+      setCurrentCommentsPage(currentCommentsPage + 1);
+    }
+  }
 
   function handleCloseModal(): void {
     setPostId('');
@@ -128,19 +142,22 @@ export function Home() {
             <Header variant='logout' />
 
             <FlatList
-              data={allPosts.slice(0, postsByPage)}
+              data={showedPosts}
               contentContainerStyle={{ flexGrow: 1 }}
               keyExtractor={keyPublishExtractor}
               renderItem={renderPublish}
               showsVerticalScrollIndicator={false}
+              onEndReached={handleNextPostsPage}
+              onEndReachedThreshold={0.1}
+              ItemSeparatorComponent={() => <ListDivider />}
               refreshControl={
                 <RefreshControl
                   refreshing={false}
                   onRefresh={() => setCurrentPostPage(1)}
                   tintColor={colors.primary}
+                  size={spacings[2]}
                 />
               }
-              ItemSeparatorComponent={() => <ListDivider />}
               ListEmptyComponent={() => (
                 <CenterWrapper>
                   <If condition={isLoadingPosts}>
@@ -160,8 +177,6 @@ export function Home() {
                 itemVisiblePercentThreshold: 50,
               }}
               onViewableItemsChanged={onViewableItemsChanged}
-              onEndReached={() => setCurrentPostPage(currentPostPage + 1)}
-              onEndReachedThreshold={0.1}
             />
 
             <ModalView
@@ -186,15 +201,18 @@ export function Home() {
 
                 <FlatList
                   contentContainerStyle={{ paddingBottom: spacings[4] }}
-                  data={comments.slice(0, commentsByPage)}
+                  data={showedComments}
                   keyExtractor={keyCommentExtractor}
                   renderItem={renderComment}
                   showsVerticalScrollIndicator={false}
+                  onEndReached={handleNextCommentsPage}
+                  onEndReachedThreshold={0.1}
                   refreshControl={
                     <RefreshControl
                       refreshing={false}
                       onRefresh={() => setCurrentCommentsPage(1)}
                       tintColor={colors.primary}
+                      size={spacings[2]}
                     />
                   }
                   ListEmptyComponent={() => (

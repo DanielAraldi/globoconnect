@@ -14,6 +14,8 @@ export const Container = styled.Pressable<AvatarProps>`
   border-width: 2px;
   border-color: ${colors.light.main};
   border-radius: ${borderRadius.pill}px;
+
+  background-color: ${colors.light.overlay['10p']};
 `;
 
 export const Photo = styled.Image`

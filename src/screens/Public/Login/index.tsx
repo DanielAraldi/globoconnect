@@ -62,7 +62,7 @@ export function Login() {
               <TextField
                 type='password'
                 marginTop={spacings[3]}
-                returnKeyType='go'
+                returnKeyType='send'
                 placeholder='Senha'
                 onChangeText={text => setUser({ ...user, password: text })}
                 onSubmitEditing={onSubmit}
