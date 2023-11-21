@@ -2,12 +2,14 @@ import { Feather } from '@expo/vector-icons';
 import {
   CommonActions,
   useFocusEffect,
+  useIsFocused,
   useNavigation,
 } from '@react-navigation/native';
+import { AVPlaybackStatus, ResizeMode, Video as ExpoVideo } from 'expo-av';
 import { Camera as ExpoCamera, VideoQuality } from 'expo-camera';
 import * as ImagePicker from 'expo-image-picker';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { Else, If, Then } from 'react-if';
+import { Else, If, Then, When } from 'react-if';
 import { Animated, Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 import {
@@ -17,7 +19,6 @@ import {
   Header,
   ModalView,
   TextField,
-  Typography,
 } from '../../../components';
 import { theme } from '../../../config';
 import { usePosts } from '../../../hooks';
@@ -30,18 +31,23 @@ import {
   GalleryButton,
   GoBackButton,
   InputContent,
+  InputWrapper,
+  Preview,
   RecordButton,
   RecordButtonWrapper,
 } from './styles';
 
 export function Add() {
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const { isLoadingPosts, createPost } = usePosts();
 
   const [isOpenModalCamera, setIsOpenModalCamera] = useState<boolean>(false);
   const [isLoadingVideo, setIsLoadingVideo] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const [videoUri, setVideoUri] = useState<string>('');
+
+  const videoRef = useRef<ExpoVideo>(null);
 
   const [permissionCamera] = ExpoCamera.useCameraPermissions();
   const [permissionLibrary] = ImagePicker.useCameraPermissions();
@@ -52,9 +58,6 @@ export function Add() {
   const { spacings, colors } = theme;
   const isDisabledSumbit = !videoUri || !title;
   const isAllowed = !!permissionCamera?.granted && !!permissionLibrary?.granted;
-  const videoRecordingMessage = videoUri
-    ? 'Seu vídeo foi gravado com sucesso! 📷'
-    : 'Ei, bora postar um vídeo!';
   const animationStyle = {
     opacity: fadeAnimation,
   };
@@ -69,6 +72,30 @@ export function Add() {
         name: 'Home',
       }),
     );
+  }
+
+  function clearStates(): void {
+    setTitle('');
+    setVideoUri('');
+    setIsOpenModalCamera(false);
+  }
+
+  async function handlePlayVideo(): Promise<void> {
+    if (videoRef.current) {
+      await videoRef.current.playAsync();
+    }
+  }
+
+  async function handlePauseVideo(): Promise<void> {
+    if (videoRef.current) {
+      await videoRef.current.pauseAsync();
+    }
+  }
+
+  async function handleLoopVideo(status: AVPlaybackStatus): Promise<void> {
+    if (status.isLoaded && videoRef.current) {
+      await videoRef.current.setIsLoopingAsync(true);
+    }
   }
 
   async function handleRequestPermission(): Promise<void> {
@@ -140,8 +167,7 @@ export function Add() {
     });
 
     if (response) goToHome();
-    setTitle('');
-    setVideoUri('');
+    clearStates();
   }
 
   useFocusEffect(
@@ -151,8 +177,17 @@ export function Add() {
   );
 
   useEffect(() => {
-    if (isOpenModalCamera) fadeAnimation.setValue(1);
+    if (isOpenModalCamera) {
+      fadeAnimation.setValue(1);
+      handlePauseVideo();
+    } else {
+      handlePlayVideo();
+    }
   }, [isOpenModalCamera]);
+
+  useEffect(() => {
+    if (!isFocused) clearStates();
+  }, [isFocused]);
 
   return (
     <Background>
@@ -161,25 +196,32 @@ export function Add() {
           <Header variant='only-logo' />
 
           <InputContent>
-            <TextField
-              value={title}
-              variant='secondary'
-              returnKeyType='next'
-              placeholder='Título'
-              marginBottom={spacings[4]}
-              onChangeText={setTitle}
-              isLoading={isLoadingPosts}
-            />
+            <InputWrapper>
+              <TextField
+                value={title}
+                variant='secondary'
+                returnKeyType='next'
+                placeholder='Título'
+                marginBottom={spacings[4]}
+                onChangeText={setTitle}
+                isLoading={isLoadingPosts}
+              />
+            </InputWrapper>
+
+            <When condition={videoUri}>
+              <Preview
+                ref={videoRef}
+                source={{ uri: videoUri }}
+                volume={1}
+                resizeMode={ResizeMode.COVER}
+                useNativeControls={false}
+                shouldPlay
+                onLoad={handleLoopVideo}
+              />
+            </When>
           </InputContent>
 
           <ButtonContent>
-            <Typography
-              variant='nunitoRegular'
-              fontSize='small'
-              textAlign='center'
-              text={videoRecordingMessage}
-            />
-
             <GenericButton
               type='primary'
               text='Adicionar vídeo'

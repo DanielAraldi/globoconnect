@@ -1,3 +1,4 @@
+import { Video } from 'expo-av';
 import { Camera as ExpoCamera, CameraType } from 'expo-camera';
 import { Animated } from 'react-native';
 import styled from 'styled-components/native';
@@ -20,8 +21,15 @@ export const InputContent = styled.View`
   width: 100%;
 
   justify-content: flex-start;
+`;
 
-  padding: ${spacings[4]}px;
+export const InputWrapper = styled.View`
+  padding: ${spacings[4]}px ${spacings[4]}px 0;
+`;
+
+export const Preview = styled(Video)`
+  width: 100%;
+  height: ${spacings[14] * 3}px;
 `;
 
 export const ButtonContent = styled.View`

@@ -103,7 +103,7 @@ export function Publish(props: PublishProps) {
           source={{ uri: url }}
           volume={1}
           resizeMode={ResizeMode.COVER}
-          useNativeControls
+          useNativeControls={false}
           shouldPlay
           onLoad={handleLoopVideo}
         />
