@@ -204,9 +204,10 @@ export function Profile() {
         onRequestClose={handleCloseModal}
       >
         <Publish
-          url={postSelected?.video || ''}
-          nickname={postSelected?.user?.nickname || ''}
-          description={postSelected?.title || ''}
+          url={postSelected?.video}
+          nickname={postSelected?.user?.nickname}
+          title={postSelected?.title}
+          description={postSelected?.description}
           comments={comments}
           name={'Diego 3g'}
           variant='unique'

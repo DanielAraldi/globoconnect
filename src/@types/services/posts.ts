@@ -14,6 +14,7 @@ export interface CommentProps {
 export interface PostProps {
   id: string;
   title: string;
+  description: string;
   video: string;
   likes: number;
   comments: number;

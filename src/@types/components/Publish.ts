@@ -12,6 +12,7 @@ export interface PublishProps {
   liked: boolean;
   comments: CommentProps[];
   url: string;
+  title: string;
   description: string;
   variant?: 'feed' | 'unique';
 }

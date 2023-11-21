@@ -64,10 +64,12 @@ export const PostBar = styled.View`
   border-bottom-color: ${colors.light.main};
 `;
 
-export const DescriptionWrapper = styled.View`
+export const PostMessageWrapper = styled.View`
   width: 100%;
 
   padding: 0 ${spacings[4]}px;
+
+  gap: ${spacings[1]}px;
 
   margin-bottom: ${spacings[4]}px;
 `;

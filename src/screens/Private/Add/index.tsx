@@ -46,7 +46,8 @@ export function Add() {
   const [isOpenModalCamera, setIsOpenModalCamera] = useState<boolean>(false);
   const [isLoadingVideo, setIsLoadingVideo] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
-  const [videoUri, setVideoUri] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [uri, setUri] = useState<string>('');
 
   const [permissionCamera] = ExpoCamera.useCameraPermissions();
   const [permissionLibrary] = ImagePicker.useCameraPermissions();
@@ -55,7 +56,7 @@ export function Add() {
   const fadeAnimation = useRef(new Animated.Value(1)).current;
 
   const { spacings, colors } = theme;
-  const isDisabledSumbit = !videoUri || !title;
+  const isDisabledSumbit = !uri || !title;
   const isAllowed = !!permissionCamera?.granted && !!permissionLibrary?.granted;
   const animationStyle = {
     opacity: fadeAnimation,
@@ -75,7 +76,8 @@ export function Add() {
 
   function clearStates(): void {
     setTitle('');
-    setVideoUri('');
+    setDescription('');
+    setUri('');
     setIsOpenModalCamera(false);
   }
 
@@ -106,7 +108,7 @@ export function Add() {
         quality: VideoQuality['1080p'],
       });
 
-      setVideoUri(uri);
+      setUri(uri);
     }
 
     handleCloseModal();
@@ -127,7 +129,7 @@ export function Add() {
     });
 
     if (!canceled && assets) {
-      setVideoUri(assets[0].uri);
+      setUri(assets[0].uri);
       handleCloseModal();
     }
     setIsLoadingVideo(false);
@@ -139,7 +141,8 @@ export function Add() {
       liked: false,
       likes: 0,
       title,
-      video: videoUri,
+      description,
+      video: uri,
       user: {
         id: 'd697a33e-6626-4edf-b3e7-f2df27007632',
         avatarUrl: 'https://avatars.githubusercontent.com/u/2254731?v=4',
@@ -177,17 +180,27 @@ export function Add() {
                 <TextField
                   value={title}
                   variant='secondary'
-                  returnKeyType='done'
+                  returnKeyType='next'
                   placeholder='Título'
-                  marginBottom={spacings[4]}
+                  marginBottom={spacings[2]}
                   onChangeText={setTitle}
+                  isLoading={isLoadingPosts}
+                />
+
+                <TextField
+                  value={description}
+                  variant='secondary'
+                  returnKeyType='done'
+                  placeholder='Descrição'
+                  marginBottom={spacings[4]}
+                  onChangeText={setDescription}
                   isLoading={isLoadingPosts}
                 />
               </InputWrapper>
 
-              <When condition={videoUri}>
+              <When condition={uri}>
                 <Video
-                  uri={videoUri}
+                  uri={uri}
                   variant='preview'
                   isPaused={isOpenModalCamera}
                 />
@@ -198,7 +211,7 @@ export function Add() {
               <ButtonContentOverlay>
                 <GenericButton
                   type='primary'
-                  text={videoUri ? 'Mudar de vídeo' : 'Adicionar vídeo'}
+                  text={uri ? 'Mudar de vídeo' : 'Adicionar vídeo'}
                   onPress={() => setIsOpenModalCamera(true)}
                   disabled={isLoadingPosts}
                 />

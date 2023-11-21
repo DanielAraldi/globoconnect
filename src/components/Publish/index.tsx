@@ -12,8 +12,8 @@ import { UserComment } from '../UserComment';
 import { Video } from '../Video';
 import {
   Container,
-  DescriptionWrapper,
   PostBar,
+  PostMessageWrapper,
   PostVideoWrapper,
   UserBar,
   Username,
@@ -24,6 +24,7 @@ export function Publish(props: PublishProps) {
     name,
     liked,
     comments,
+    title,
     description,
     nickname,
     url,
@@ -50,6 +51,22 @@ export function Publish(props: PublishProps) {
       title: 'Venha fazer parte do GloboConnect!',
     });
   }
+
+  const renderPostMessage: JSX.Element = (
+    <PostMessageWrapper>
+      <Typography
+        variant='nunitoSemiBold'
+        text={`@${nickname}: ${title}`}
+        fontSize='medium'
+      />
+
+      <Typography
+        variant='nunitoSemiBold'
+        text={description}
+        fontSize='medium'
+      />
+    </PostMessageWrapper>
+  );
 
   const renderComments = useMemo(
     () =>
@@ -93,15 +110,7 @@ export function Publish(props: PublishProps) {
         <Video uri={url} />
       </PostVideoWrapper>
 
-      <When condition={!isFeed}>
-        <DescriptionWrapper>
-          <Typography
-            variant='nunitoSemiBold'
-            text={`@${nickname}: ${description}`}
-            fontSize={'medium'}
-          />
-        </DescriptionWrapper>
-      </When>
+      <When condition={!isFeed}>{renderPostMessage}</When>
 
       <If condition={isFeed}>
         <Then>
@@ -131,22 +140,14 @@ export function Publish(props: PublishProps) {
             <Else>
               <EmptyMessage
                 variant='comments'
-                message={'Ainda não há comentário\nnesta publicação'}
+                message={'Ainda não há comentários\nnesta publicação'}
               />
             </Else>
           </If>
         </Else>
       </If>
 
-      <When condition={isFeed}>
-        <DescriptionWrapper>
-          <Typography
-            variant='nunitoSemiBold'
-            text={`@${nickname}: ${description}`}
-            fontSize={'medium'}
-          />
-        </DescriptionWrapper>
-      </When>
+      <When condition={isFeed}>{renderPostMessage}</When>
     </Container>
   );
 }
