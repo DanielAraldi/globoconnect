@@ -25,9 +25,11 @@ import { usePosts } from '../../../hooks';
 import {
   ButtonCameraContent,
   ButtonContent,
+  ButtonContentOverlay,
   Camera,
   CameraOverlay,
   Container,
+  Content,
   GalleryButton,
   GoBackButton,
   InputContent,
@@ -164,106 +166,110 @@ export function Add() {
   }, [isFocused]);
 
   return (
-    <Background>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <Container>
-          <Header variant='only-logo' />
+    <Container>
+      <Background>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <Content>
+            <Header variant='only-logo' />
 
-          <InputContent>
-            <InputWrapper>
-              <TextField
-                value={title}
-                variant='secondary'
-                returnKeyType='next'
-                placeholder='Título'
-                marginBottom={spacings[4]}
-                onChangeText={setTitle}
-                isLoading={isLoadingPosts}
-              />
-            </InputWrapper>
+            <InputContent>
+              <InputWrapper>
+                <TextField
+                  value={title}
+                  variant='secondary'
+                  returnKeyType='done'
+                  placeholder='Título'
+                  marginBottom={spacings[4]}
+                  onChangeText={setTitle}
+                  isLoading={isLoadingPosts}
+                />
+              </InputWrapper>
 
-            <When condition={videoUri}>
-              <Video
-                uri={videoUri}
-                variant='preview'
-                isPaused={isOpenModalCamera}
-              />
-            </When>
-          </InputContent>
+              <When condition={videoUri}>
+                <Video
+                  uri={videoUri}
+                  variant='preview'
+                  isPaused={isOpenModalCamera}
+                />
+              </When>
+            </InputContent>
 
-          <ButtonContent>
-            <GenericButton
-              type='primary'
-              text='Adicionar vídeo'
-              onPress={() => setIsOpenModalCamera(true)}
-              disabled={isLoadingPosts}
-            />
+            <ButtonContent>
+              <ButtonContentOverlay>
+                <GenericButton
+                  type='primary'
+                  text={videoUri ? 'Mudar de vídeo' : 'Adicionar vídeo'}
+                  onPress={() => setIsOpenModalCamera(true)}
+                  disabled={isLoadingPosts}
+                />
 
-            <GenericButton
-              type='primary'
-              text='Postar'
-              onPress={onSubmit}
-              disabled={isDisabledSumbit}
-              isLoading={isLoadingPosts}
-            />
-          </ButtonContent>
-        </Container>
-      </TouchableWithoutFeedback>
+                <GenericButton
+                  type='primary'
+                  text='Postar'
+                  onPress={onSubmit}
+                  disabled={isDisabledSumbit}
+                  isLoading={isLoadingPosts}
+                />
+              </ButtonContentOverlay>
+            </ButtonContent>
+          </Content>
+        </TouchableWithoutFeedback>
 
-      <ModalView
-        variant='full'
-        visible={isOpenModalCamera}
-        onRequestClose={handleCloseModal}
-      >
-        <If condition={isAllowed}>
-          <Then>
-            <Camera ref={cameraRef}>
-              <CameraOverlay isLoading={isLoadingVideo}>
-                <GoBackButton
-                  onPress={handleCloseModal}
-                  disabled={isLoadingVideo}
-                >
-                  <Feather
-                    name='arrow-left'
-                    size={spacings[6]}
-                    color={colors.light.main}
-                  />
-                </GoBackButton>
-
-                <ButtonCameraContent>
-                  <RecordButtonWrapper style={animationStyle}>
-                    <RecordButton
-                      activeOpacity={0.85}
-                      onLongPress={handleRecordVideo}
-                      onPressOut={handleOnPressOut}
-                      disabled={isLoadingVideo}
-                    />
-                  </RecordButtonWrapper>
-
-                  <GalleryButton
-                    onPress={handleGalleryVideo}
+        <ModalView
+          variant='full'
+          visible={isOpenModalCamera}
+          onRequestClose={handleCloseModal}
+        >
+          <If condition={isAllowed}>
+            <Then>
+              <Camera ref={cameraRef}>
+                <CameraOverlay isLoading={isLoadingVideo}>
+                  <GoBackButton
+                    onPress={handleCloseModal}
                     disabled={isLoadingVideo}
                   >
                     <Feather
-                      name='image'
+                      name='arrow-left'
+                      size={spacings[6]}
                       color={colors.light.main}
-                      size={spacings[10]}
                     />
-                  </GalleryButton>
-                </ButtonCameraContent>
-              </CameraOverlay>
-            </Camera>
-          </Then>
-          <Else>
-            <EmptyMessage
-              variant='camera'
-              message={
-                'Habilite à sua câmera e o acesso à\ngaleria para que você possa gravar vídeos'
-              }
-            />
-          </Else>
-        </If>
-      </ModalView>
-    </Background>
+                  </GoBackButton>
+
+                  <ButtonCameraContent>
+                    <RecordButtonWrapper style={animationStyle}>
+                      <RecordButton
+                        activeOpacity={0.85}
+                        onLongPress={handleRecordVideo}
+                        onPressOut={handleOnPressOut}
+                        disabled={isLoadingVideo}
+                      />
+                    </RecordButtonWrapper>
+
+                    <GalleryButton
+                      onPress={handleGalleryVideo}
+                      disabled={isLoadingVideo}
+                    >
+                      <Feather
+                        name='image'
+                        color={colors.light.main}
+                        size={spacings[10]}
+                      />
+                    </GalleryButton>
+                  </ButtonCameraContent>
+                </CameraOverlay>
+              </Camera>
+            </Then>
+            <Else>
+              <EmptyMessage
+                variant='camera'
+                message={
+                  'Habilite à sua câmera e o acesso à\ngaleria para que você possa gravar vídeos'
+                }
+              />
+            </Else>
+          </If>
+        </ModalView>
+      </Background>
+    </Container>
   );
 }

@@ -1,5 +1,5 @@
 import { Camera as ExpoCamera, CameraType } from 'expo-camera';
-import { Animated } from 'react-native';
+import { Animated, Platform } from 'react-native';
 import styled from 'styled-components/native';
 
 import { CameraOverlayStyleProps } from '../../../@types';
@@ -8,18 +8,20 @@ import { getStatusBarHeight } from '../../../utils';
 
 const { spacings, colors, borderRadius } = theme;
 
-export const Container = styled.View`
+export const Container = styled.KeyboardAvoidingView.attrs({
+  behavior: Platform.OS === 'ios' ? 'padding' : 'height',
+})`
+  flex: 1;
+`;
+
+export const Content = styled.View`
   flex: 1;
 
   width: 100%;
 `;
 
 export const InputContent = styled.View`
-  flex: 1;
-
   width: 100%;
-
-  justify-content: flex-start;
 `;
 
 export const InputWrapper = styled.View`
@@ -32,10 +34,16 @@ export const ButtonContent = styled.View`
   width: 100%;
 
   justify-content: flex-end;
+`;
+
+export const ButtonContentOverlay = styled.View`
+  width: 100%;
 
   padding: ${spacings[4]}px;
 
-  gap: ${spacings[4]}px;
+  gap: ${spacings[2]}px;
+
+  background-color: ${colors.background.main};
 `;
 
 export const CameraContent = styled.View`
