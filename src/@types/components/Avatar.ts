@@ -4,4 +4,5 @@ export type AvatarStyleProps = Pick<AvatarProps, 'variant'>;
 
 export interface AvatarProps extends PressableProps {
   variant: 'profile' | 'post';
+  avatarUrl?: string;
 }

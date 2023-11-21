@@ -1,13 +1,15 @@
 import { AvatarProps } from '../../@types';
+import { USER } from '../../config';
 import { Container, Photo } from './styles';
 
-export function Avatar({ variant }: AvatarProps) {
+export function Avatar(props: AvatarProps) {
+  const { variant, avatarUrl } = props;
+
+  const source = avatarUrl ? { uri: avatarUrl } : USER;
+
   return (
     <Container variant={variant}>
-      <Photo
-        source={{ uri: 'https://avatars.githubusercontent.com/u/2254731?v=4' }}
-        resizeMode='contain'
-      />
+      <Photo source={source} resizeMode='contain' />
     </Container>
   );
 }
