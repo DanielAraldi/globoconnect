@@ -1,6 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Else, If, Then } from 'react-if';
-import { FlatList, Keyboard, TouchableNativeFeedback } from 'react-native';
+import {
+  FlatList,
+  Keyboard,
+  RefreshControl,
+  TouchableNativeFeedback,
+} from 'react-native';
 
 import { CommentProps, PostProps, ViewableItemsProps } from '../../../@types';
 import {
@@ -13,7 +18,7 @@ import {
   TextField,
   UserComment,
 } from '../../../components';
-import { theme } from '../../../config';
+import { ITENS_LIMIT_BY_PAGE, theme } from '../../../config';
 import { usePosts } from '../../../hooks';
 import { CommentService } from '../../../services';
 import { Publish } from './Publish';
@@ -25,16 +30,22 @@ export function Home() {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [postFocusedIndex, setPostFocusedIndex] = useState<number>(0);
+  const [currentPostPage, setCurrentPostPage] = useState<number>(1);
+  const [currentCommentsPage, setCurrentCommentsPage] = useState<number>(1);
   const [comment, setComment] = useState<string>('');
   const [postId, setPostId] = useState<string>('');
   const [comments, setComments] = useState<CommentProps[]>([]);
 
-  const { spacings } = theme;
+  const { spacings, colors } = theme;
+
+  const postsByPage = ITENS_LIMIT_BY_PAGE * currentPostPage;
+  const commentsByPage = ITENS_LIMIT_BY_PAGE * currentCommentsPage;
 
   function handleCloseModal(): void {
     setPostId('');
     setComment('');
     setComments([]);
+    setCurrentCommentsPage(1);
     setIsOpenModal(false);
   }
 
@@ -46,20 +57,22 @@ export function Home() {
   }
 
   async function createComment(): Promise<void> {
-    setIsLoading(true);
-    const response = await CommentService.create({
-      postId,
-      comment,
-      user: {
-        id: 'd697a33e-6626-4edf-b3e7-f2df27007632',
-        avatarUrl: 'https://avatars.githubusercontent.com/u/2254731?v=4',
-        nickname: 'diego3g',
-        name: 'Diego 3g',
-      },
-    });
+    if (comment.trim()) {
+      setIsLoading(true);
+      const response = await CommentService.create({
+        postId,
+        comment,
+        user: {
+          id: 'd697a33e-6626-4edf-b3e7-f2df27007632',
+          avatarUrl: 'https://avatars.githubusercontent.com/u/2254731?v=4',
+          nickname: 'diego3g',
+          name: 'Diego 3g',
+        },
+      });
 
-    if (response) handleCloseModal();
-    setIsLoading(false);
+      if (response) handleCloseModal();
+      setIsLoading(false);
+    }
   }
 
   const onViewableItemsChanged = useCallback((view: ViewableItemsProps) => {
@@ -68,7 +81,7 @@ export function Home() {
 
   const keyPublishExtractor = useCallback(
     (item: PostProps) => item.id.toString(),
-    [],
+    [currentPostPage],
   );
 
   const renderPublish = useCallback(
@@ -84,7 +97,7 @@ export function Home() {
         onPress={async () => await fetchComments(item.id)}
       />
     ),
-    [postFocusedIndex, isOpenModal],
+    [postFocusedIndex, isOpenModal, currentPostPage],
   );
 
   const keyCommentExtractor = useCallback(
@@ -101,6 +114,10 @@ export function Home() {
 
   useEffect(() => {
     loadAllPosts();
+
+    return () => {
+      setCurrentPostPage(1);
+    };
   }, []);
 
   return (
@@ -111,11 +128,18 @@ export function Home() {
             <Header variant='logout' />
 
             <FlatList
-              data={allPosts}
+              data={allPosts.slice(0, postsByPage)}
               contentContainerStyle={{ flexGrow: 1 }}
               keyExtractor={keyPublishExtractor}
               renderItem={renderPublish}
               showsVerticalScrollIndicator={false}
+              refreshControl={
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={() => setCurrentPostPage(1)}
+                  tintColor={colors.primary}
+                />
+              }
               ItemSeparatorComponent={() => <ListDivider />}
               ListEmptyComponent={() => (
                 <CenterWrapper>
@@ -136,6 +160,8 @@ export function Home() {
                 itemVisiblePercentThreshold: 50,
               }}
               onViewableItemsChanged={onViewableItemsChanged}
+              onEndReached={() => setCurrentPostPage(currentPostPage + 1)}
+              onEndReachedThreshold={0.1}
             />
 
             <ModalView
@@ -160,10 +186,17 @@ export function Home() {
 
                 <FlatList
                   contentContainerStyle={{ paddingBottom: spacings[4] }}
-                  data={comments}
+                  data={comments.slice(0, commentsByPage)}
                   keyExtractor={keyCommentExtractor}
                   renderItem={renderComment}
                   showsVerticalScrollIndicator={false}
+                  refreshControl={
+                    <RefreshControl
+                      refreshing={false}
+                      onRefresh={() => setCurrentCommentsPage(1)}
+                      tintColor={colors.primary}
+                    />
+                  }
                   ListEmptyComponent={() => (
                     <EmptyMessage
                       variant='comments'
@@ -175,7 +208,7 @@ export function Home() {
                 <GenericButton
                   type='primary'
                   text='Enviar'
-                  disabled={!comment}
+                  disabled={!comment.trim()}
                   onPress={createComment}
                   isLoading={isLoading}
                 />
