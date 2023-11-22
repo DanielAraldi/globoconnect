@@ -8,7 +8,7 @@ import Toast from 'react-native-toast-message';
 import { PublishProps } from '../../../../@types';
 import { PostTemplate, Typography } from '../../../../components';
 import { theme } from '../../../../config';
-import { usePosts } from '../../../../hooks';
+import { useAuth, usePosts } from '../../../../hooks';
 import { PostService } from '../../../../services';
 import { Container, InteractionBar, PostMessageWrapper } from './styles';
 
@@ -18,7 +18,6 @@ export function Publish(props: PublishProps) {
     name,
     uri,
     isPaused,
-    liked,
     likes,
     postId,
     description,
@@ -28,12 +27,14 @@ export function Publish(props: PublishProps) {
   } = props;
 
   const { loadAllPosts } = usePosts();
+  const { user } = useAuth();
   const isFocused = useIsFocused();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const { colors, spacings } = theme;
 
+  const isLikedPost = likes.find(id => user.id === id);
   const videoIsPaused = !isFocused || isPaused;
   const commonIconProps = {
     color: colors.light.main,
@@ -55,22 +56,20 @@ export function Publish(props: PublishProps) {
     );
   }
 
-  async function giveLike(): Promise<boolean> {
-    const isLiked = await PostService.like(postId, likes);
-    if (isLiked === liked) handleToastMessage();
-    return isLiked;
+  async function giveLike(): Promise<void> {
+    const isLiked = await PostService.like(postId, user.id);
+    if (!isLiked) handleToastMessage();
   }
 
-  async function giveDeslike(): Promise<boolean> {
-    const isDesliked = await PostService.deslike(postId, likes);
-    if (isDesliked === liked) handleToastMessage();
-    return isDesliked;
+  async function giveDeslike(): Promise<void> {
+    const isDesliked = await PostService.deslike(postId, user.id);
+    if (!isDesliked) handleToastMessage();
   }
 
   async function handleSatisfaction(): Promise<void> {
     setIsLoading(true);
 
-    if (liked) await giveDeslike();
+    if (isLikedPost) await giveDeslike();
     else await giveLike();
 
     await loadAllPosts();
@@ -121,7 +120,7 @@ export function Publish(props: PublishProps) {
           onPress={handleSatisfaction}
           disabled={isLoading}
         >
-          <If condition={liked}>
+          <If condition={isLikedPost}>
             <Then>
               <MaterialCommunityIcons
                 name='heart'

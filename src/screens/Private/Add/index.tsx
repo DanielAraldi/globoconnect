@@ -169,12 +169,10 @@ export function Add() {
 
   async function onSubmit(): Promise<void> {
     const response = await createPost({
-      comments: 0,
-      liked: false,
-      likes: 0,
       title,
       description,
       video: uri,
+      likes: [],
       user: {
         id: user.id,
         avatarUrl: user.avatarUrl,

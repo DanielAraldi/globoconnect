@@ -26,12 +26,12 @@ export const PostService: PostServiceProps = {
 
   async loadById(postId: string): Promise<PostProps | null> {
     try {
-      const { data } = await api.get<PostProps>(`/posts`, {
+      const { data } = await api.get<PostProps[]>(`/posts`, {
         params: {
           id: postId,
         },
       });
-      return data;
+      return data.length ? data[0] : null;
     } catch (error) {
       return null;
     }
@@ -50,30 +50,33 @@ export const PostService: PostServiceProps = {
     }
   },
 
-  async like(postId: string, currentLikes: number): Promise<boolean> {
+  async like(postId: string, userId: string): Promise<boolean> {
     try {
-      const { data } = await api.patch<PostProps>(`/posts/${postId}`, {
-        likes: currentLikes + 1,
-        liked: true,
-      });
-
-      return data.liked;
+      const post = await this.loadById(postId);
+      if (post) {
+        await api.patch<PostProps>(`/posts/${postId}`, {
+          likes: [...post.likes, userId],
+        });
+      }
+      return post ? true : false;
     } catch (error) {
       return false;
     }
   },
 
-  async deslike(postId: string, currentLikes: number): Promise<boolean> {
+  async deslike(postId: string, userId: string): Promise<boolean> {
     try {
-      const isZero = currentLikes === 0;
-      const { data } = await api.patch<PostProps>(`/posts/${postId}`, {
-        likes: isZero ? 0 : currentLikes - 1,
-        liked: false,
-      });
-
-      return data.liked;
+      const post = await this.loadById(postId);
+      if (post) {
+        const likesFiltered = post.likes.filter(id => userId !== id);
+        await api.patch<PostProps>(`/posts/${postId}`, {
+          likes: likesFiltered,
+        });
+      }
+      return post ? true : false;
     } catch (error) {
-      return true;
+      console.log(error);
+      return false;
     }
   },
 };

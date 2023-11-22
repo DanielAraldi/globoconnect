@@ -5,7 +5,7 @@ import Toast from 'react-native-toast-message';
 
 import { PostTemplateProps, StackNavigate } from '../../@types';
 import { theme } from '../../config';
-import { usePosts } from '../../hooks';
+import { useAuth, usePosts } from '../../hooks';
 import { AuthService } from '../../services';
 import { Avatar } from '../Avatar';
 import { Typography } from '../Typography';
@@ -24,6 +24,7 @@ export function PostTemplate(props: PostTemplateProps) {
 
   const navigation = useNavigation<StackNavigate>();
   const { loadPostByUserId } = usePosts();
+  const { user } = useAuth();
 
   const { colors, spacings } = theme;
 
@@ -46,7 +47,7 @@ export function PostTemplate(props: PostTemplateProps) {
   }
 
   async function goToProfile(): Promise<void> {
-    if (nickname) {
+    if (nickname && nickname !== user.nickname) {
       const response = await AuthService.loadByNickname(nickname);
       if (response) {
         await loadPostByUserId(response.id);

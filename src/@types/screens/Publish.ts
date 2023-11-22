@@ -2,8 +2,7 @@ export interface PublishProps {
   postId: string;
   name: string;
   nickname: string;
-  liked: boolean;
-  likes: number;
+  likes: string[];
   uri: string;
   title: string;
   description: string;
