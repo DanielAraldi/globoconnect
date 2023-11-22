@@ -21,7 +21,7 @@ import {
   Video,
 } from '../../../components';
 import { theme } from '../../../config';
-import { usePosts } from '../../../hooks';
+import { useAuth, usePosts } from '../../../hooks';
 import {
   ButtonCameraContent,
   ButtonContent,
@@ -41,6 +41,7 @@ import {
 export function Add() {
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const { user } = useAuth();
   const { isLoadingPosts, createPost } = usePosts();
 
   const [isOpenModalCamera, setIsOpenModalCamera] = useState<boolean>(false);
@@ -150,10 +151,10 @@ export function Add() {
       description,
       video: uri,
       user: {
-        id: 'd697a33e-6626-4edf-b3e7-f2df27007632',
-        avatarUrl: 'https://avatars.githubusercontent.com/u/2254731?v=4',
-        nickname: 'diego3g',
-        name: 'Diego 3g',
+        id: user.id,
+        avatarUrl: user.avatarUrl,
+        nickname: user.nickname,
+        name: user.name,
       },
     });
 
@@ -217,14 +218,12 @@ export function Add() {
             <ButtonContent>
               <ButtonContentOverlay>
                 <GenericButton
-                  type='primary'
                   text={uri ? 'Mudar de vídeo' : 'Adicionar vídeo'}
                   onPress={handleOpenCamera}
                   disabled={isLoadingPosts}
                 />
 
                 <GenericButton
-                  type='primary'
                   text='Postar'
                   onPress={onSubmit}
                   disabled={isDisabledSumbit}

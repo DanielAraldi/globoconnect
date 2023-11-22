@@ -4,7 +4,7 @@ export interface UserLoginProps {
 }
 
 export interface UserProps {
-  id: number;
+  id: string;
   email: string;
   name: string;
   password: string;
@@ -12,5 +12,8 @@ export interface UserProps {
   avatarUrl: string;
   followers: number;
   following: number;
-  numberOfPosts: number;
+}
+
+export interface AuthServiceProps {
+  signIn(props: UserLoginProps): Promise<UserProps | null>;
 }

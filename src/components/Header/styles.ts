@@ -25,3 +25,11 @@ export const TypographyWrapper = styled.View`
 
   margin-right: ${spacings[0]}px;
 `;
+
+export const LogoutContent = styled.View`
+  width: 100%;
+
+  padding: ${spacings[1]}px ${spacings[4]}px;
+
+  gap: ${spacings[5]}px;
+`;

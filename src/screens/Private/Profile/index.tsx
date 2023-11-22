@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Else, If, Then } from 'react-if';
 import { FlatList, View } from 'react-native';
 
@@ -16,8 +16,9 @@ import {
   Typography,
 } from '../../../components';
 import { ITENS_LIMIT_BY_PAGE, theme } from '../../../config';
-import { usePosts } from '../../../hooks';
+import { useAuth, usePosts } from '../../../hooks';
 import { CommentService } from '../../../services';
+import { formatNumbersToShowInProfile } from '../../../utils';
 import { Post } from './Post';
 import {
   Container,
@@ -29,6 +30,7 @@ import {
 } from './styles';
 
 export function Profile() {
+  const { user } = useAuth();
   const { postsOfUser, isLoadingPosts, loadPostByUserId } = usePosts();
 
   const [isOpenPost, setIsOpenPost] = useState<boolean>(false);
@@ -39,31 +41,11 @@ export function Profile() {
 
   const { colors, spacings } = theme;
 
+  const totalPosts = formatNumbersToShowInProfile(postsOfUser.length);
+  const totalFollowers = formatNumbersToShowInProfile(user.followers);
+  const totalFollowing = formatNumbersToShowInProfile(user.following);
   const itemsByPage = ITENS_LIMIT_BY_PAGE * currentPage;
   const posts = postsOfUser.slice(0, itemsByPage);
-
-  function handleValueDigits(value: string): string {
-    return (
-      {
-        4: value[0],
-        5: value.slice(0, 2),
-        6: value.slice(0, 3),
-        7: value[0],
-        8: value.slice(0, 2),
-        9: value.slice(0, 3),
-      }[value.length] || value
-    );
-  }
-
-  function handleQuantityOfValues(value: number): string {
-    const valueAsString = value.toString();
-    const amountDigits = valueAsString.length;
-    const digits = handleValueDigits(valueAsString);
-
-    if (amountDigits <= 3) return valueAsString;
-
-    return `${digits}${amountDigits < 7 ? 'mil' : 'mi'}`;
-  }
 
   function handleCloseModal(): void {
     setIsOpenPost(false);
@@ -89,7 +71,7 @@ export function Profile() {
   async function loadMorePosts(): Promise<void> {
     setIsRefresh(true);
     setCurrentPage(1);
-    await loadPostByUserId('d697a33e-6626-4edf-b3e7-f2df27007632');
+    await loadPostByUserId(user.id);
     setIsRefresh(false);
   }
 
@@ -105,22 +87,18 @@ export function Profile() {
     [],
   );
 
-  useEffect(() => {
-    loadPostByUserId('d697a33e-6626-4edf-b3e7-f2df27007632');
-  }, []);
-
   return (
     <Background>
-      <Header variant='profile' />
+      <Header variant='profile' nickname={user.nickname} />
 
       <Container>
         <UserContainer>
-          <Avatar variant='profile' />
+          <Avatar variant='profile' avatarUrl={user.avatarUrl} />
 
           <SocialContent>
             <View>
               <Typography
-                text={handleQuantityOfValues(1)}
+                text={totalPosts}
                 variant='nunitoRegular'
                 textAlign='center'
                 fontSize='medium'
@@ -138,7 +116,7 @@ export function Profile() {
           <SocialContent>
             <View>
               <Typography
-                text={handleQuantityOfValues(25434)}
+                text={totalFollowers}
                 variant='nunitoRegular'
                 textAlign='center'
                 fontSize='medium'
@@ -156,7 +134,7 @@ export function Profile() {
           <SocialContent>
             <View>
               <Typography
-                text={handleQuantityOfValues(180)}
+                text={totalFollowing}
                 variant='nunitoRegular'
                 textAlign='center'
                 fontSize='medium'
@@ -173,7 +151,7 @@ export function Profile() {
         </UserContainer>
 
         <Typography
-          text='Diego 3g'
+          text={user.name}
           variant='nunitoRegular'
           textAlign='left'
           fontSize='medium'

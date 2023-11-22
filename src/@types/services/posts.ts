@@ -4,14 +4,6 @@ export interface PostUser {
   avatarUrl: string;
   name: string;
 }
-
-export interface CommentProps {
-  id: string;
-  postId: string;
-  comment: string;
-  user: PostUser;
-}
-
 export interface PostProps {
   id: string;
   title: string;
@@ -30,9 +22,4 @@ export interface PostServiceProps {
   loadAllByUserId(userId: string): Promise<PostProps[]>;
   like(postId: string, currentLikes: number): Promise<boolean>;
   deslike(postId: string, currentLikes: number): Promise<boolean>;
-}
-
-export interface CommentServiceProps {
-  create(props: Omit<CommentProps, 'id'>): Promise<boolean>;
-  loadByPostId(postId: string): Promise<CommentProps[]>;
 }

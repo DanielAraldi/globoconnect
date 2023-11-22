@@ -7,20 +7,18 @@
       "password": "abc123",
       "nickname": "marcosjbm",
       "avatarUrl": "https://avatars.githubusercontent.com/u/67931411?v=4",
-      "followers": 567,
-      "following": 112,
-      "numberOfPosts": 0
+      "followers": 260,
+      "following": 55
     },
     {
       "id": "23592c64-9bdb-4f1c-8414-bcd67e324d65",
       "email": "rafaelmota@gmail.com",
-      "name": "Rafael Mota",
+      "name": "Rafael Mota Alves",
       "password": "abc123",
       "nickname": "rafaelmota",
       "avatarUrl": "https://avatars.githubusercontent.com/u/86445038?v=4",
-      "followers": 223,
-      "following": 981,
-      "numberOfPosts": 0
+      "followers": 97,
+      "following": 125
     },
     {
       "id": "cc25b9bf-4b6e-45cc-aab5-083750ec51cd",
@@ -29,9 +27,8 @@
       "password": "abc123",
       "nickname": "filipedeschamps",
       "avatarUrl": "https://avatars.githubusercontent.com/u/4248081?v=4",
-      "followers": 12576,
-      "following": 765,
-      "numberOfPosts": 0
+      "followers": 188465,
+      "following": 365
     },
     {
       "id": "c6e9978c-efc1-4aa8-b299-55cb072e6e58",
@@ -40,9 +37,8 @@
       "password": "abc123",
       "nickname": "rocketseat",
       "avatarUrl": "https://avatars.githubusercontent.com/u/28929274?s=200&v=4",
-      "followers": 330981,
-      "following": 1171,
-      "numberOfPosts": 0
+      "followers": 326983,
+      "following": 11
     },
     {
       "id": "c96a0fb3-ce6e-474a-838c-a84bd3fda232",
@@ -51,9 +47,8 @@
       "password": "abc123",
       "nickname": "maykbrito",
       "avatarUrl": "https://avatars.githubusercontent.com/u/6643122?v=4",
-      "followers": 14634,
-      "following": 45,
-      "numberOfPosts": 0
+      "followers": 34147,
+      "following": 709
     },
     {
       "id": "d697a33e-6626-4edf-b3e7-f2df27007632",
@@ -62,9 +57,18 @@
       "password": "abc123",
       "nickname": "diego3g",
       "avatarUrl": "https://avatars.githubusercontent.com/u/2254731?v=4",
-      "followers": 25434,
-      "following": 180,
-      "numberOfPosts": 1
+      "followers": 77756,
+      "following": 273
+    },
+    {
+      "id": "12281449-78d0-45dd-ad75-a148f9db2a3c",
+      "email": "danielsaraldi@gmail.com",
+      "name": "Daniel Sansão Araldi",
+      "password": "abc123",
+      "nickname": "danielsaraldi",
+      "avatarUrl": "https://avatars.githubusercontent.com/u/50931267?v=4",
+      "followers": 607,
+      "following": 399
     }
   ],
   "comments": [
@@ -323,7 +327,22 @@
         "id": "23592c64-9bdb-4f1c-8414-bcd67e324d65",
         "nickname": "rafaelmota",
         "avatarUrl": "https://avatars.githubusercontent.com/u/86445038?v=4",
-        "name": "Rafael Mota"
+        "name": "Rafael Mota Alves"
+      }
+    },
+    {
+      "id": "c96a0fb3-ce6e-474a-838c-a84bd3fda232",
+      "title": "Meu desenho animado favorito!",
+      "description": "Fala galera queria compartilhar com vocês o meu desenho animado favorito",
+      "video": "http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4",
+      "likes": 3,
+      "comments": 1,
+      "liked": false,
+      "user": {
+        "id": "23592c64-9bdb-4f1c-8414-bcd67e324d65",
+        "nickname": "maykbrito",
+        "avatarUrl": "https://avatars.githubusercontent.com/u/6643122?v=4",
+        "name": "Mayk Brito"
       }
     },
     {
@@ -338,7 +357,7 @@
         "id": "23592c64-9bdb-4f1c-8414-bcd67e324d65",
         "nickname": "rafaelmota",
         "avatarUrl": "https://avatars.githubusercontent.com/u/86445038?v=4",
-        "name": "Rafael Mota"
+        "name": "Rafael Mota Alves"
       }
     },
     {

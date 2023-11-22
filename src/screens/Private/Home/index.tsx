@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Else, If, Then } from 'react-if';
 import { FlatList, Keyboard, TouchableNativeFeedback } from 'react-native';
 
 import { CommentProps, PostProps, ViewableItemsProps } from '../../../@types';
 import {
   Background,
+  Comment,
   EmptyMessage,
   GenericButton,
   Header,
@@ -12,15 +13,15 @@ import {
   ModalView,
   Refresh,
   TextField,
-  UserComment,
 } from '../../../components';
 import { ITENS_LIMIT_BY_PAGE, theme } from '../../../config';
-import { usePosts } from '../../../hooks';
+import { useAuth, usePosts } from '../../../hooks';
 import { CommentService } from '../../../services';
 import { Publish } from './Publish';
 import { CenterWrapper, Container, ListDivider, ModalContent } from './styles';
 
 export function Home() {
+  const { user } = useAuth();
   const { allPosts, loadAllPosts, isLoadingPosts } = usePosts();
 
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -91,10 +92,10 @@ export function Home() {
         postId,
         comment,
         user: {
-          id: 'd697a33e-6626-4edf-b3e7-f2df27007632',
-          avatarUrl: 'https://avatars.githubusercontent.com/u/2254731?v=4',
-          nickname: 'diego3g',
-          name: 'Diego 3g',
+          id: user.id,
+          avatarUrl: user.avatarUrl,
+          nickname: user.nickname,
+          name: user.name,
         },
       });
 
@@ -135,18 +136,10 @@ export function Home() {
 
   const renderComment = useCallback(
     ({ item }: RenderItem<CommentProps>) => (
-      <UserComment comment={item.comment} nickname={item.user.nickname} />
+      <Comment comment={item.comment} nickname={item.user.nickname} />
     ),
     [comments, currentCommentsPage],
   );
-
-  useEffect(() => {
-    loadAllPosts();
-
-    return () => {
-      setCurrentPostPage(1);
-    };
-  }, []);
 
   return (
     <Container>
@@ -232,7 +225,6 @@ export function Home() {
                 />
 
                 <GenericButton
-                  type='primary'
                   text='Enviar'
                   disabled={!comment.trim()}
                   onPress={createComment}

@@ -1,9 +1,16 @@
+import { Dimensions } from 'react-native';
 import styled from 'styled-components/native';
 
 import { ModalViewStyleProps } from '../../@types';
 import { theme } from '../../config';
 
 const { colors, spacings } = theme;
+
+const marginTopInModal: Record<ModalViewStyleProps['variant'], number> = {
+  full: 0,
+  logout: Dimensions.get('window').height - spacings[15],
+  normal: spacings[14],
+};
 
 export const Overlay = styled.View`
   flex: 1;
@@ -14,7 +21,7 @@ export const Overlay = styled.View`
 export const Container = styled.View<ModalViewStyleProps>`
   flex: 1;
 
-  margin-top: ${({ variant }) => (variant === 'full' ? 0 : spacings[14])}px;
+  margin-top: ${({ variant }) => marginTopInModal[variant]}px;
 `;
 
 export const Bar = styled.View`

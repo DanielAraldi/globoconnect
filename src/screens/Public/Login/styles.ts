@@ -40,12 +40,6 @@ export const Logo = styled.Image`
 
 export const ButtonContent = styled.View`
   width: 100%;
-`;
 
-export const ButtonWrapper = styled.View`
-  flex-direction: row;
-
-  justify-content: space-between;
-
-  margin: ${spacings[5]}px 0;
+  gap: ${spacings[5]}px;
 `;

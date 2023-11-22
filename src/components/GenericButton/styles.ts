@@ -1,20 +1,12 @@
 import { StyleSheet } from 'react-native';
-import styled, { css } from 'styled-components/native';
+import styled from 'styled-components/native';
 
-import { GenericButtonStyleProps } from '../../@types';
 import { theme } from '../../config';
 
 const { spacings, borderRadius, colors } = theme;
 
-export const Container = styled.TouchableOpacity<GenericButtonStyleProps>`
-  ${({ type, hugWidth }) =>
-    type === 'auth'
-      ? css`
-          min-width: ${hugWidth ? '100%' : '48%'};
-        `
-      : css`
-          width: 100%;
-        `}
+export const Container = styled.TouchableOpacity`
+  width: 100%;
   height: ${spacings[12]}px;
 
   padding: ${spacings[1]}px;

@@ -1,5 +1,6 @@
 export * from './Avatar';
 export * from './Background';
+export * from './Comment';
 export * from './EmptyMessage';
 export * from './GenericButton';
 export * from './Header';
@@ -10,5 +11,4 @@ export * from './Refresh';
 export * from './TextField';
 export * from './Thumbnail';
 export * from './Typography';
-export * from './UserComment';
 export * from './Video';

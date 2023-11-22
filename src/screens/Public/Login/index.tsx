@@ -1,6 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { When } from 'react-if';
 import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 
 import { UserLoginProps } from '../../../@types';
@@ -11,9 +9,9 @@ import {
   Typography,
 } from '../../../components';
 import { LOGO, theme } from '../../../config';
+import { useAuth } from '../../../hooks';
 import {
   ButtonContent,
-  ButtonWrapper,
   Container,
   Content,
   GreetingContent,
@@ -22,19 +20,18 @@ import {
 } from './styles';
 
 export function Login() {
-  const navigation = useNavigation();
+  const { signIn, isLoadingAuth } = useAuth();
 
   const [user, setUser] = useState({} as UserLoginProps);
 
   const { spacings } = theme;
   const isIos = Platform.OS === 'ios';
+  const canSumbmit = user.email && user.password;
 
-  function goToHome(): void {
-    navigation.navigate('PrivateRoutes' as never);
-  }
-
-  function onSubmit(): void {
-    if (user.email && user.password) goToHome();
+  async function onSubmit(): Promise<void> {
+    if (canSumbmit) {
+      await signIn(user);
+    }
   }
 
   return (
@@ -57,6 +54,7 @@ export function Login() {
                 returnKeyType='next'
                 placeholder='Email'
                 onChangeText={text => setUser({ ...user, email: text })}
+                isLoading={isLoadingAuth}
               />
 
               <TextField
@@ -66,6 +64,7 @@ export function Login() {
                 placeholder='Senha'
                 onChangeText={text => setUser({ ...user, password: text })}
                 onSubmitEditing={onSubmit}
+                isLoading={isLoadingAuth}
               />
             </InputContent>
 
@@ -75,19 +74,12 @@ export function Login() {
                 textAlign='center'
               />
 
-              <ButtonWrapper>
-                <GenericButton
-                  type='auth'
-                  socialIcon='google'
-                  hugWidth={!isIos}
-                />
-
-                <When condition={isIos}>
-                  <GenericButton type='auth' socialIcon='apple' />
-                </When>
-              </ButtonWrapper>
-
-              <GenericButton type='primary' text='Entrar' onPress={onSubmit} />
+              <GenericButton
+                text='Entrar'
+                onPress={onSubmit}
+                disabled={!canSumbmit}
+                isLoading={isLoadingAuth}
+              />
             </ButtonContent>
           </Content>
         </TouchableWithoutFeedback>

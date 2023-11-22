@@ -6,12 +6,11 @@ import {
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { theme } from './src/config';
-import { PostProvider } from './src/hooks';
+import { AuthProvider, PostProvider } from './src/hooks';
 import { Routes } from './src/routes';
 import { getStatusBarHeight } from './src/utils';
 
@@ -24,14 +23,6 @@ export default function App() {
     NunitoSans_700Bold,
   });
 
-  async function hiddenSphash(): Promise<void> {
-    await SplashScreen.hideAsync();
-  }
-
-  useEffect(() => {
-    if (fontsLoaded) hiddenSphash();
-  }, [fontsLoaded]);
-
   if (!fontsLoaded) return null;
 
   return (
@@ -43,9 +34,11 @@ export default function App() {
           translucent
         />
 
-        <PostProvider>
-          <Routes />
-        </PostProvider>
+        <AuthProvider>
+          <PostProvider>
+            <Routes />
+          </PostProvider>
+        </AuthProvider>
       </SafeAreaView>
     </SafeAreaProvider>
   );

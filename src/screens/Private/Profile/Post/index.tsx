@@ -3,10 +3,10 @@ import { Else, If, Then } from 'react-if';
 
 import { PostProfileProps } from '../../../../@types';
 import {
+  Comment,
   EmptyMessage,
   PostTemplate,
   Typography,
-  UserComment,
 } from '../../../../components';
 import { ITENS_LIMIT_BY_PAGE, theme } from '../../../../config';
 import { Container, PostMessageWrapper } from './styles';
@@ -50,7 +50,7 @@ export function Post(props: PostProfileProps) {
   const renderComments = useMemo(
     () =>
       commentsByPage.map(item => (
-        <UserComment
+        <Comment
           key={item.id}
           comment={item.comment}
           nickname={item.user.nickname}
