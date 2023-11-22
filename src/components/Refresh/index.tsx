@@ -3,12 +3,14 @@ import { RefreshControl } from 'react-native';
 import { RefreshProps } from '../../@types';
 import { theme } from '../../config';
 
-export function Refresh({ onRefresh }: RefreshProps) {
+export function Refresh(props: RefreshProps) {
+  const { onRefresh, refreshing } = props;
+
   const { colors, spacings } = theme;
 
   return (
     <RefreshControl
-      refreshing={false}
+      refreshing={refreshing}
       onRefresh={onRefresh}
       tintColor={colors.primary}
       size={spacings[2]}

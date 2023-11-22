@@ -5,7 +5,6 @@ import { PostProfileProps } from '../../../../@types';
 import {
   EmptyMessage,
   PostTemplate,
-  Refresh,
   Typography,
   UserComment,
 } from '../../../../components';
@@ -64,7 +63,6 @@ export function Post(props: PostProfileProps) {
     <Container
       contentContainerStyle={internalScrollViewStyle}
       showsVerticalScrollIndicator={false}
-      refreshControl={<Refresh onRefresh={() => setCurrentPage(1)} />}
       onScrollEndDrag={handleNextPage}
     >
       <PostTemplate

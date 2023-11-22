@@ -25,6 +25,8 @@ export function Home() {
 
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isPostRefresh, setIsPostRefresh] = useState<boolean>(false);
+  const [isCommentsRefresh, setIsCommentsRefresh] = useState<boolean>(false);
   const [postFocusedIndex, setPostFocusedIndex] = useState<number>(0);
   const [currentPostPage, setCurrentPostPage] = useState<number>(1);
   const [currentCommentsPage, setCurrentCommentsPage] = useState<number>(1);
@@ -59,6 +61,22 @@ export function Home() {
     setIsOpenModal(false);
   }
 
+  async function loadMorePosts(): Promise<void> {
+    setIsPostRefresh(true);
+    setCurrentPostPage(1);
+    await loadAllPosts();
+    setIsPostRefresh(false);
+  }
+
+  async function loadMoreComments(): Promise<void> {
+    if (comments.length) {
+      setIsCommentsRefresh(true);
+      setCurrentCommentsPage(1);
+      await fetchComments(comments[0].postId);
+      setIsCommentsRefresh(false);
+    }
+  }
+
   async function fetchComments(postId: string): Promise<void> {
     setPostId(postId);
     const response = await CommentService.loadByPostId(postId);
@@ -91,7 +109,7 @@ export function Home() {
 
   const keyPublishExtractor = useCallback(
     (item: PostProps) => item.id.toString(),
-    [currentPostPage, allPosts],
+    [allPosts, currentPostPage],
   );
 
   const renderPublish = useCallback(
@@ -107,19 +125,19 @@ export function Home() {
         onPress={async () => await fetchComments(item.id)}
       />
     ),
-    [postFocusedIndex, isOpenModal, currentPostPage, allPosts],
+    [postFocusedIndex, allPosts, isOpenModal, currentPostPage],
   );
 
   const keyCommentExtractor = useCallback(
     (item: CommentProps) => item.id.toString(),
-    [],
+    [comments, currentCommentsPage],
   );
 
   const renderComment = useCallback(
     ({ item }: RenderItem<CommentProps>) => (
       <UserComment comment={item.comment} nickname={item.user.nickname} />
     ),
-    [],
+    [comments, currentCommentsPage],
   );
 
   useEffect(() => {
@@ -147,11 +165,11 @@ export function Home() {
               onEndReachedThreshold={0.1}
               ItemSeparatorComponent={() => <ListDivider />}
               refreshControl={
-                <Refresh onRefresh={() => setCurrentPostPage(1)} />
+                <Refresh refreshing={isPostRefresh} onRefresh={loadMorePosts} />
               }
               ListEmptyComponent={() => (
                 <CenterWrapper>
-                  <If condition={isLoadingPosts}>
+                  <If condition={isLoadingPosts && !isPostRefresh}>
                     <Then>
                       <Load />
                     </Then>
@@ -165,7 +183,8 @@ export function Home() {
                 </CenterWrapper>
               )}
               viewabilityConfig={{
-                itemVisiblePercentThreshold: 50,
+                viewAreaCoveragePercentThreshold: 50,
+                minimumViewTime: 250,
               }}
               onViewableItemsChanged={onViewableItemsChanged}
             />
@@ -199,7 +218,10 @@ export function Home() {
                   onEndReached={handleNextCommentsPage}
                   onEndReachedThreshold={0.1}
                   refreshControl={
-                    <Refresh onRefresh={() => setCurrentCommentsPage(1)} />
+                    <Refresh
+                      refreshing={isCommentsRefresh}
+                      onRefresh={loadMoreComments}
+                    />
                   }
                   ListEmptyComponent={() => (
                     <EmptyMessage

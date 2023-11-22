@@ -1,5 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useCallback, useEffect, useState } from 'react';
+import { Else, If, Then } from 'react-if';
 import { FlatList, View } from 'react-native';
 
 import { CommentProps, PostProps } from '../../../@types';
@@ -31,6 +32,7 @@ export function Profile() {
   const { postsOfUser, isLoadingPosts, loadPostByUserId } = usePosts();
 
   const [isOpenPost, setIsOpenPost] = useState<boolean>(false);
+  const [isRefresh, setIsRefresh] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [comments, setComments] = useState<CommentProps[]>([]);
   const [postSelected, setPostSelected] = useState<PostProps>({} as PostProps);
@@ -82,6 +84,13 @@ export function Profile() {
     await fetchComments(post.id);
     setPostSelected(post);
     setIsOpenPost(true);
+  }
+
+  async function loadMorePosts(): Promise<void> {
+    setIsRefresh(true);
+    setCurrentPage(1);
+    await loadPostByUserId('d697a33e-6626-4edf-b3e7-f2df27007632');
+    setIsRefresh(false);
   }
 
   const keyExtractor = useCallback((item: PostProps) => item.id.toString(), []);
@@ -197,19 +206,24 @@ export function Profile() {
             onEndReached={handleNextPage}
             onEndReachedThreshold={0.1}
             numColumns={2}
-            refreshControl={<Refresh onRefresh={() => setCurrentPage(1)} />}
-            ListEmptyComponent={() =>
-              isLoadingPosts ? (
-                <LoadContent>
-                  <Load />
-                </LoadContent>
-              ) : (
-                <EmptyMessage
-                  variant='posts'
-                  message={'Não há publiações\nfeitas no momento'}
-                />
-              )
+            refreshControl={
+              <Refresh refreshing={isRefresh} onRefresh={loadMorePosts} />
             }
+            ListEmptyComponent={() => (
+              <If condition={isLoadingPosts && !isRefresh}>
+                <Then>
+                  <LoadContent>
+                    <Load />
+                  </LoadContent>
+                </Then>
+                <Else>
+                  <EmptyMessage
+                    variant='posts'
+                    message={'Não há publiações\nfeitas no momento'}
+                  />
+                </Else>
+              </If>
+            )}
           />
         </PostContent>
       </Container>
