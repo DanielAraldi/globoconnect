@@ -1,6 +1,6 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useCallback, useEffect, useState } from 'react';
-import { FlatList, RefreshControl, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 
 import { CommentProps, PostProps } from '../../../@types';
 import {
@@ -10,6 +10,7 @@ import {
   Header,
   Load,
   ModalView,
+  Refresh,
   Thumbnail,
   Typography,
 } from '../../../components';
@@ -196,14 +197,7 @@ export function Profile() {
             onEndReached={handleNextPage}
             onEndReachedThreshold={0.1}
             numColumns={2}
-            refreshControl={
-              <RefreshControl
-                refreshing={false}
-                onRefresh={() => setCurrentPage(1)}
-                tintColor={colors.primary}
-                size={spacings[2]}
-              />
-            }
+            refreshControl={<Refresh onRefresh={() => setCurrentPage(1)} />}
             ListEmptyComponent={() =>
               isLoadingPosts ? (
                 <LoadContent>

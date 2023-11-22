@@ -82,6 +82,11 @@ export function Add() {
     setIsOpenModalCamera(false);
   }
 
+  function handleOpenCamera(): void {
+    Keyboard.dismiss();
+    setIsOpenModalCamera(true);
+  }
+
   async function handleRequestPermission(): Promise<void> {
     await ExpoCamera.requestMicrophonePermissionsAsync();
     await ExpoCamera.requestCameraPermissionsAsync();
@@ -214,7 +219,7 @@ export function Add() {
                 <GenericButton
                   type='primary'
                   text={uri ? 'Mudar de vídeo' : 'Adicionar vídeo'}
-                  onPress={() => setIsOpenModalCamera(true)}
+                  onPress={handleOpenCamera}
                   disabled={isLoadingPosts}
                 />
 

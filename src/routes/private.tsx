@@ -10,7 +10,7 @@ export function PrivateRoutes() {
   const { colors, spacings } = theme;
 
   function handleColor(isFocused: boolean): string {
-    return isFocused ? colors.primary : colors.light.overlay['50p'];
+    return isFocused ? colors.light.main : colors.light.overlay['50p'];
   }
 
   return (

@@ -316,9 +316,9 @@
       "title": "Meu querido diário",
       "description": "Hoje comecei a escrever no meu diário, é algo novo pra mim :)",
       "video": "https://isorepublic.com/wp-content/uploads/2018/07/iso-republic-free-video-man-writing-notepad.mp4",
-      "likes": 22,
+      "likes": 23,
       "comments": 1,
-      "liked": false,
+      "liked": true,
       "user": {
         "id": "23592c64-9bdb-4f1c-8414-bcd67e324d65",
         "nickname": "rafaelmota",

@@ -1,11 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Else, If, Then } from 'react-if';
-import {
-  FlatList,
-  Keyboard,
-  RefreshControl,
-  TouchableNativeFeedback,
-} from 'react-native';
+import { FlatList, Keyboard, TouchableNativeFeedback } from 'react-native';
 
 import { CommentProps, PostProps, ViewableItemsProps } from '../../../@types';
 import {
@@ -15,6 +10,7 @@ import {
   Header,
   Load,
   ModalView,
+  Refresh,
   TextField,
   UserComment,
 } from '../../../components';
@@ -36,7 +32,7 @@ export function Home() {
   const [postId, setPostId] = useState<string>('');
   const [comments, setComments] = useState<CommentProps[]>([]);
 
-  const { spacings, colors } = theme;
+  const { spacings } = theme;
 
   const postsByPage = ITENS_LIMIT_BY_PAGE * currentPostPage;
   const commentsByPage = ITENS_LIMIT_BY_PAGE * currentCommentsPage;
@@ -95,7 +91,7 @@ export function Home() {
 
   const keyPublishExtractor = useCallback(
     (item: PostProps) => item.id.toString(),
-    [currentPostPage],
+    [currentPostPage, allPosts],
   );
 
   const renderPublish = useCallback(
@@ -111,7 +107,7 @@ export function Home() {
         onPress={async () => await fetchComments(item.id)}
       />
     ),
-    [postFocusedIndex, isOpenModal, currentPostPage],
+    [postFocusedIndex, isOpenModal, currentPostPage, allPosts],
   );
 
   const keyCommentExtractor = useCallback(
@@ -151,12 +147,7 @@ export function Home() {
               onEndReachedThreshold={0.1}
               ItemSeparatorComponent={() => <ListDivider />}
               refreshControl={
-                <RefreshControl
-                  refreshing={false}
-                  onRefresh={() => setCurrentPostPage(1)}
-                  tintColor={colors.primary}
-                  size={spacings[2]}
-                />
+                <Refresh onRefresh={() => setCurrentPostPage(1)} />
               }
               ListEmptyComponent={() => (
                 <CenterWrapper>
@@ -208,12 +199,7 @@ export function Home() {
                   onEndReached={handleNextCommentsPage}
                   onEndReachedThreshold={0.1}
                   refreshControl={
-                    <RefreshControl
-                      refreshing={false}
-                      onRefresh={() => setCurrentCommentsPage(1)}
-                      tintColor={colors.primary}
-                      size={spacings[2]}
-                    />
+                    <Refresh onRefresh={() => setCurrentCommentsPage(1)} />
                   }
                   ListEmptyComponent={() => (
                     <EmptyMessage

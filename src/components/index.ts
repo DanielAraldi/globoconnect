@@ -6,6 +6,7 @@ export * from './Header';
 export * from './Load';
 export * from './ModalView';
 export * from './PostTemplate';
+export * from './Refresh';
 export * from './TextField';
 export * from './Thumbnail';
 export * from './Typography';

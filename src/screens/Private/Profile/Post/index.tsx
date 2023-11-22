@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
 import { Else, If, Then } from 'react-if';
-import { RefreshControl } from 'react-native';
 
 import { PostProfileProps } from '../../../../@types';
 import {
   EmptyMessage,
   PostTemplate,
+  Refresh,
   Typography,
   UserComment,
 } from '../../../../components';
@@ -18,7 +18,7 @@ export function Post(props: PostProfileProps) {
 
   const [currentPage, setCurrentPage] = useState<number>(1);
 
-  const { spacings, colors } = theme;
+  const { spacings } = theme;
 
   const itemsByPage = ITENS_LIMIT_BY_PAGE * currentPage;
   const commentsByPage = comments.slice(0, itemsByPage);
@@ -64,14 +64,7 @@ export function Post(props: PostProfileProps) {
     <Container
       contentContainerStyle={internalScrollViewStyle}
       showsVerticalScrollIndicator={false}
-      refreshControl={
-        <RefreshControl
-          refreshing={false}
-          onRefresh={() => setCurrentPage(1)}
-          tintColor={colors.primary}
-          size={spacings[2]}
-        />
-      }
+      refreshControl={<Refresh onRefresh={() => setCurrentPage(1)} />}
       onScrollEndDrag={handleNextPage}
     >
       <PostTemplate
