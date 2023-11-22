@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import { UserLoginProps } from '../../../@types';
 import {
@@ -9,7 +10,7 @@ import {
   Typography,
 } from '../../../components';
 import { LOGO, theme } from '../../../config';
-import { useAuth } from '../../../hooks';
+import { useAuth, usePosts } from '../../../hooks';
 import {
   ButtonContent,
   Container,
@@ -21,6 +22,7 @@ import {
 
 export function Login() {
   const { signIn, isLoadingAuth } = useAuth();
+  const { loadAllPosts } = usePosts();
 
   const [user, setUser] = useState({} as UserLoginProps);
 
@@ -28,9 +30,24 @@ export function Login() {
   const isIos = Platform.OS === 'ios';
   const canSumbmit = user.email && user.password;
 
+  function showToast(title: string, message: string): void {
+    Toast.show({
+      type: 'error',
+      text1: title,
+      text2: message,
+    });
+  }
+
   async function onSubmit(): Promise<void> {
     if (canSumbmit) {
-      await signIn(user);
+      await loadAllPosts();
+      const isLogged = await signIn(user);
+      if (!isLogged) {
+        showToast(
+          'Puxa vida, não conseguimos conectar',
+          'Certifique-se que os dados inseridos estão corretos e tente novamente.',
+        );
+      }
     }
   }
 
@@ -69,11 +86,6 @@ export function Login() {
             </InputContent>
 
             <ButtonContent>
-              <Typography
-                text={'Não tem conta?\nCadastre-se agora com'}
-                textAlign='center'
-              />
-
               <GenericButton
                 text='Entrar'
                 onPress={onSubmit}

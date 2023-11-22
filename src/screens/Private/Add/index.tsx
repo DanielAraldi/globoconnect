@@ -10,6 +10,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Else, If, Then, When } from 'react-if';
 import { Animated, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import {
   Background,
@@ -68,6 +69,14 @@ export function Add() {
     setIsOpenModalCamera(false);
   }
 
+  function showToast(title: string, message: string): void {
+    Toast.show({
+      type: 'error',
+      text1: title,
+      text2: message,
+    });
+  }
+
   function goToHome(): void {
     navigation.dispatch(
       CommonActions.navigate({
@@ -100,46 +109,62 @@ export function Add() {
   }
 
   async function handleRecordVideo(): Promise<void> {
-    if (cameraRef.current) {
-      const ONE_MINUTE = 100_000;
+    try {
+      if (cameraRef.current) {
+        const ONE_MINUTE = 100_000;
 
-      Animated.timing(fadeAnimation, {
-        toValue: 0,
-        duration: ONE_MINUTE,
-        useNativeDriver: true,
-      }).start();
+        Animated.timing(fadeAnimation, {
+          toValue: 0,
+          duration: ONE_MINUTE,
+          useNativeDriver: true,
+        }).start();
 
-      const { uri } = await cameraRef.current.recordAsync({
-        maxDuration: ONE_MINUTE,
-        mute: false,
-        quality: VideoQuality['1080p'],
-      });
+        const { uri } = await cameraRef.current.recordAsync({
+          maxDuration: ONE_MINUTE,
+          mute: false,
+          quality: VideoQuality['1080p'],
+        });
 
-      setUri(uri);
+        setUri(uri);
+      }
+    } catch (error) {
+      showToast(
+        'Ei connector!',
+        'Certifique-se que as permissões para o acesso a câmera estão habilitadas.',
+      );
+    } finally {
+      handleCloseModal();
     }
-
-    handleCloseModal();
   }
 
   async function handleGalleryVideo(): Promise<void> {
     setIsLoadingVideo(true);
 
-    const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
-      quality: 1,
-      selectionLimit: 1,
-      videoMaxDuration: 60,
-      allowsEditing: true,
-      allowsMultipleSelection: false,
-      mediaTypes: ImagePicker.MediaTypeOptions.Videos,
-      videoQuality: ImagePicker.UIImagePickerControllerQualityType.High,
-      presentationStyle: ImagePicker.UIImagePickerPresentationStyle.FULL_SCREEN,
-    });
+    try {
+      const { assets, canceled } = await ImagePicker.launchImageLibraryAsync({
+        quality: 1,
+        selectionLimit: 1,
+        videoMaxDuration: 60,
+        allowsEditing: true,
+        allowsMultipleSelection: false,
+        mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+        videoQuality: ImagePicker.UIImagePickerControllerQualityType.High,
+        presentationStyle:
+          ImagePicker.UIImagePickerPresentationStyle.FULL_SCREEN,
+      });
 
-    if (!canceled && assets) {
-      setUri(assets[0].uri);
-      handleCloseModal();
+      if (!canceled && assets) {
+        setUri(assets[0].uri);
+        handleCloseModal();
+      }
+    } catch (error) {
+      showToast(
+        'Ei connector!',
+        'Certifique-se que as permissões para o acesso a galeria estão habilitadas.',
+      );
+    } finally {
+      setIsLoadingVideo(false);
     }
-    setIsLoadingVideo(false);
   }
 
   async function onSubmit(): Promise<void> {
@@ -158,8 +183,15 @@ export function Add() {
       },
     });
 
-    if (response) goToHome();
-    clearStates();
+    if (response) {
+      goToHome();
+      clearStates();
+    } else {
+      showToast(
+        'Puxa vida, não conseguimos postar',
+        'Certifique-se que você está com uma conexão estável de internet e tente novamente.',
+      );
+    }
   }
 
   useFocusEffect(

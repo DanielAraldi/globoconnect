@@ -10,5 +10,6 @@ export * from './PostTemplate';
 export * from './Refresh';
 export * from './TextField';
 export * from './Thumbnail';
+export * from './Toast';
 export * from './Typography';
 export * from './Video';

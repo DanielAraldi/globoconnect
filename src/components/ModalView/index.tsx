@@ -5,6 +5,7 @@ import { Modal } from 'react-native';
 import { ModalViewProps } from '../../@types';
 import { theme } from '../../config';
 import { Background } from '../Background';
+import { Toast } from '../Toast';
 import { Bar, CloseButton, Container, Overlay } from './styles';
 
 export function ModalView(props: ModalViewProps) {
@@ -34,28 +35,32 @@ export function ModalView(props: ModalViewProps) {
       onDismiss={handleCloseModal}
       {...rest}
     >
-      <Overlay>
-        <Container variant={variant}>
-          <Background>
-            <When condition={variant !== 'full'}>
-              <Bar />
+      <>
+        <Overlay>
+          <Container variant={variant}>
+            <Background>
+              <When condition={variant !== 'full'}>
+                <Bar />
 
-              <CloseButton
-                onPress={handleCloseModal}
-                disabled={isDisabledClose}
-              >
-                <MaterialCommunityIcons
-                  name='close-circle'
-                  size={spacings[6]}
-                  color={iconColor}
-                />
-              </CloseButton>
-            </When>
+                <CloseButton
+                  onPress={handleCloseModal}
+                  disabled={isDisabledClose}
+                >
+                  <MaterialCommunityIcons
+                    name='close-circle'
+                    size={spacings[6]}
+                    color={iconColor}
+                  />
+                </CloseButton>
+              </When>
 
-            {children}
-          </Background>
-        </Container>
-      </Overlay>
+              {children}
+            </Background>
+          </Container>
+        </Overlay>
+
+        <Toast />
+      </>
     </Modal>
   );
 }

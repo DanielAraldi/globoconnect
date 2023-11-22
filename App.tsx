@@ -9,6 +9,7 @@ import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView, StyleSheet } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+import { Toast } from './src/components';
 import { theme } from './src/config';
 import { AuthProvider, PostProvider } from './src/hooks';
 import { Routes } from './src/routes';
@@ -39,6 +40,8 @@ export default function App() {
             <Routes />
           </PostProvider>
         </AuthProvider>
+
+        <Toast />
       </SafeAreaView>
     </SafeAreaProvider>
   );

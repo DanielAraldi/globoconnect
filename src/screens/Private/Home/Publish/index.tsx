@@ -3,6 +3,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useState } from 'react';
 import { Else, If, Then } from 'react-if';
 import { TouchableOpacity } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import { PublishProps } from '../../../../@types';
 import { PostTemplate, Typography } from '../../../../components';
@@ -39,12 +40,31 @@ export function Publish(props: PublishProps) {
     size: spacings[5],
   };
 
+  function showToast(title: string, message: string): void {
+    Toast.show({
+      type: 'error',
+      text1: title,
+      text2: message,
+    });
+  }
+
+  function handleToastMessage(): void {
+    showToast(
+      'Ops!',
+      'Certifique-se que você está com um conexão estável de internet e tente novamente',
+    );
+  }
+
   async function giveLike(): Promise<boolean> {
-    return await PostService.like(postId, likes);
+    const isLiked = await PostService.like(postId, likes);
+    if (isLiked === liked) handleToastMessage();
+    return isLiked;
   }
 
   async function giveDeslike(): Promise<boolean> {
-    return await PostService.deslike(postId, likes);
+    const isDesliked = await PostService.deslike(postId, likes);
+    if (isDesliked === liked) handleToastMessage();
+    return isDesliked;
   }
 
   async function handleSatisfaction(): Promise<void> {

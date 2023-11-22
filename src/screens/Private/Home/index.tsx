@@ -1,6 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Else, If, Then } from 'react-if';
 import { FlatList, Keyboard, TouchableNativeFeedback } from 'react-native';
+import Toast from 'react-native-toast-message';
 
 import { CommentProps, PostProps, ViewableItemsProps } from '../../../@types';
 import {
@@ -69,6 +70,14 @@ export function Home() {
     setIsPostRefresh(false);
   }
 
+  function showToast(title: string, message: string): void {
+    Toast.show({
+      type: 'error',
+      text1: title,
+      text2: message,
+    });
+  }
+
   async function loadMoreComments(): Promise<void> {
     if (comments.length) {
       setIsCommentsRefresh(true);
@@ -99,7 +108,14 @@ export function Home() {
         },
       });
 
-      if (response) handleCloseModal();
+      if (response) {
+        handleCloseModal();
+      } else {
+        showToast(
+          'Seu comentário não foi enviado!',
+          'Certifique-se que você está com uma conexão estável de internet e tente novamente.',
+        );
+      }
       setIsLoading(false);
     }
   }

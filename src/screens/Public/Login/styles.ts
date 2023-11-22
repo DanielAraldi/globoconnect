@@ -41,5 +41,5 @@ export const Logo = styled.Image`
 export const ButtonContent = styled.View`
   width: 100%;
 
-  gap: ${spacings[5]}px;
+  margin-top: ${spacings[10]}px;
 `;

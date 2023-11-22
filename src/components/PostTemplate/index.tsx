@@ -16,7 +16,7 @@ export function PostTemplate(props: PostTemplateProps) {
   async function handleShare(): Promise<void> {
     const message = `Ei, da uma olhada nesse vídeo! Acesso em: ${uri}`;
 
-    Share.share({
+    await Share.share({
       message,
       url: uri,
       title: 'Venha fazer parte do GloboConnect!',
