@@ -16,4 +16,5 @@ export interface UserProps {
 
 export interface AuthServiceProps {
   signIn(props: UserLoginProps): Promise<UserProps | null>;
+  loadByNickname(nickname: string): Promise<UserProps | null>;
 }

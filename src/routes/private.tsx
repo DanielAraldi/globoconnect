@@ -1,5 +1,6 @@
 import { Feather } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { TabActions, useNavigation } from '@react-navigation/native';
 
 import { theme } from '../config';
 import { Add, Home, Profile } from '../screens';
@@ -7,6 +8,8 @@ import { Add, Home, Profile } from '../screens';
 const { Navigator, Screen } = createBottomTabNavigator();
 
 export function PrivateRoutes() {
+  const navigation = useNavigation();
+
   const { colors, spacings } = theme;
 
   function handleColor(isFocused: boolean): string {
@@ -64,6 +67,13 @@ export function PrivateRoutes() {
               color={handleColor(focused)}
             />
           ),
+        }}
+        listeners={{
+          tabPress: async event => {
+            event.preventDefault();
+            const action = TabActions.jumpTo('Profile', {});
+            navigation.dispatch(action);
+          },
         }}
       />
     </Navigator>

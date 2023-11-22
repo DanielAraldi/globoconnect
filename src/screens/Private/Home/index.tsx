@@ -208,7 +208,6 @@ export function Home() {
                 <TextField
                   value={comment}
                   autoCorrect
-                  autoFocus
                   variant='secondary'
                   returnKeyType='send'
                   placeholder='Deixe seu comentário'

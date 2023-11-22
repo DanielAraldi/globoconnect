@@ -16,4 +16,17 @@ export const AuthService: AuthServiceProps = {
       return null;
     }
   },
+
+  async loadByNickname(nickname: string): Promise<UserProps | null> {
+    try {
+      const { data } = await api.get<UserProps[]>('/users', {
+        params: {
+          nickname,
+        },
+      });
+      return data.length ? data[0] : null;
+    } catch (error) {
+      return null;
+    }
+  },
 };

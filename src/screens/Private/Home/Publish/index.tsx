@@ -96,6 +96,7 @@ export function Publish(props: PublishProps) {
   return (
     <Container>
       <PostTemplate
+        nickname={nickname}
         avatarUrl={avatarUrl}
         name={name}
         uri={uri}

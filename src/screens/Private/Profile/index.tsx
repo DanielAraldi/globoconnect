@@ -1,9 +1,10 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useFocusEffect, useRoute } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
 import { Else, If, Then } from 'react-if';
 import { FlatList, View } from 'react-native';
 
-import { CommentProps, PostProps } from '../../../@types';
+import { CommentProps, PostProps, UserProps } from '../../../@types';
 import {
   Avatar,
   Background,
@@ -33,6 +34,10 @@ export function Profile() {
   const { user } = useAuth();
   const { postsOfUser, isLoadingPosts, loadPostByUserId } = usePosts();
 
+  const route = useRoute();
+  const params = route.params as UserProps;
+  const isVisit = !!params?.id;
+
   const [isOpenPost, setIsOpenPost] = useState<boolean>(false);
   const [isRefresh, setIsRefresh] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -41,11 +46,18 @@ export function Profile() {
 
   const { colors, spacings } = theme;
 
+  const isLoadingList = isLoadingPosts && !isRefresh;
+  const userId = isVisit ? params.id : user.id;
+  const username = isVisit ? params.name : user.name;
+  const nickname = isVisit ? params.nickname : user.nickname;
+  const avatarUrl = isVisit ? params.avatarUrl : user.avatarUrl;
+  const followers = isVisit ? params.followers : user.followers;
+  const following = isVisit ? params.following : user.following;
   const totalPosts = formatNumbersToShowInProfile(postsOfUser.length);
-  const totalFollowers = formatNumbersToShowInProfile(user.followers);
-  const totalFollowing = formatNumbersToShowInProfile(user.following);
+  const totalFollowers = formatNumbersToShowInProfile(followers);
+  const totalFollowing = formatNumbersToShowInProfile(following);
   const itemsByPage = ITENS_LIMIT_BY_PAGE * currentPage;
-  const posts = postsOfUser.slice(0, itemsByPage);
+  const posts = isLoadingList ? [] : postsOfUser.slice(0, itemsByPage);
 
   function handleCloseModal(): void {
     setIsOpenPost(false);
@@ -71,11 +83,14 @@ export function Profile() {
   async function loadMorePosts(): Promise<void> {
     setIsRefresh(true);
     setCurrentPage(1);
-    await loadPostByUserId(user.id);
+    await loadPostByUserId(userId);
     setIsRefresh(false);
   }
 
-  const keyExtractor = useCallback((item: PostProps) => item.id.toString(), []);
+  const keyExtractor = useCallback(
+    (item: PostProps) => item.id.toString(),
+    [postsOfUser],
+  );
 
   const renderItem = useCallback(
     ({ item }: RenderItem<PostProps>) => (
@@ -84,16 +99,22 @@ export function Profile() {
         onPress={async () => await handleSelectPost(item)}
       />
     ),
-    [],
+    [postsOfUser],
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      loadPostByUserId(userId);
+    }, [isVisit]),
   );
 
   return (
     <Background>
-      <Header variant='profile' nickname={user.nickname} />
+      <Header variant='profile' nickname={nickname} />
 
       <Container>
         <UserContainer>
-          <Avatar variant='profile' avatarUrl={user.avatarUrl} />
+          <Avatar variant='profile' avatarUrl={avatarUrl} />
 
           <SocialContent>
             <View>
@@ -151,7 +172,7 @@ export function Profile() {
         </UserContainer>
 
         <Typography
-          text={user.name}
+          text={username}
           variant='nunitoRegular'
           textAlign='left'
           fontSize='medium'
@@ -188,7 +209,7 @@ export function Profile() {
               <Refresh refreshing={isRefresh} onRefresh={loadMorePosts} />
             }
             ListEmptyComponent={() => (
-              <If condition={isLoadingPosts && !isRefresh}>
+              <If condition={isLoadingList}>
                 <Then>
                   <LoadContent>
                     <Load />

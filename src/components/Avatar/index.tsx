@@ -3,12 +3,12 @@ import { USER } from '../../config';
 import { Container, Photo } from './styles';
 
 export function Avatar(props: AvatarProps) {
-  const { variant, avatarUrl } = props;
+  const { avatarUrl, ...rest } = props;
 
   const source = avatarUrl ? { uri: avatarUrl } : USER;
 
   return (
-    <Container variant={variant}>
+    <Container {...rest}>
       <Photo source={source} resizeMode='contain' />
     </Container>
   );
