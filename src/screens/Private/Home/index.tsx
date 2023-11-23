@@ -152,7 +152,11 @@ export function Home() {
 
   const renderComment = useCallback(
     ({ item }: RenderItem<CommentProps>) => (
-      <Comment comment={item.comment} nickname={item.user.nickname} />
+      <Comment
+        variant='commentator'
+        comment={item.comment}
+        nickname={item.user.nickname}
+      />
     ),
     [comments, currentCommentsPage],
   );

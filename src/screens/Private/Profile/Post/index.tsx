@@ -2,14 +2,9 @@ import { useMemo, useState } from 'react';
 import { Else, If, Then } from 'react-if';
 
 import { PostProfileProps } from '../../../../@types';
-import {
-  Comment,
-  EmptyMessage,
-  PostTemplate,
-  Typography,
-} from '../../../../components';
+import { Comment, EmptyMessage, PostTemplate } from '../../../../components';
 import { ITENS_LIMIT_BY_PAGE, theme } from '../../../../config';
-import { Container, PostMessageWrapper } from './styles';
+import { CommentWrapper, Container } from './styles';
 
 export function Post(props: PostProfileProps) {
   const { name, comments, title, description, nickname, uri, avatarUrl } =
@@ -31,30 +26,16 @@ export function Post(props: PostProfileProps) {
     }
   }
 
-  const renderPostMessage: JSX.Element = (
-    <PostMessageWrapper>
-      <Typography
-        variant='nunitoSemiBold'
-        text={`@${nickname}: ${title}`}
-        fontSize='medium'
-      />
-
-      <Typography
-        variant='nunitoRegular'
-        text={description}
-        fontSize='medium'
-      />
-    </PostMessageWrapper>
-  );
-
   const renderComments = useMemo(
     () =>
       commentsByPage.map(item => (
-        <Comment
-          key={item.id}
-          comment={item.comment}
-          nickname={item.user.nickname}
-        />
+        <CommentWrapper key={item.id}>
+          <Comment
+            variant='commentator'
+            comment={item.comment}
+            nickname={item.user.nickname}
+          />
+        </CommentWrapper>
       )),
     [currentPage],
   );
@@ -72,7 +53,7 @@ export function Post(props: PostProfileProps) {
         variant='profile'
       />
 
-      {renderPostMessage}
+      <Comment comment={description} nickname={nickname} title={title} />
 
       <If condition={comments.length}>
         <Then>{renderComments}</Then>

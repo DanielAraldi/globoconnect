@@ -23,13 +23,3 @@ export const InteractionBar = styled.View`
   border-bottom-width: 1px;
   border-bottom-color: ${colors.light.main};
 `;
-
-export const PostMessageWrapper = styled.View`
-  width: 100%;
-
-  padding: 0 ${spacings[4]}px;
-
-  gap: ${spacings[1]}px;
-
-  margin-bottom: ${spacings[4]}px;
-`;

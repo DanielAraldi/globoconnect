@@ -12,12 +12,8 @@ export const Container = styled.ScrollView.attrs({
   width: 100%;
 `;
 
-export const PostMessageWrapper = styled.View`
+export const CommentWrapper = styled.View`
   width: 100%;
 
-  padding: 0 ${spacings[4]}px;
-
-  gap: ${spacings[1]}px;
-
-  margin-bottom: ${spacings[2]}px;
+  padding: 0 ${spacings[2]}px;
 `;

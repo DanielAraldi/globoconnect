@@ -6,11 +6,11 @@ import { TouchableOpacity } from 'react-native';
 import Toast from 'react-native-toast-message';
 
 import { PublishProps } from '../../../../@types';
-import { PostTemplate, Typography } from '../../../../components';
+import { Comment, PostTemplate } from '../../../../components';
 import { theme } from '../../../../config';
 import { useAuth, usePosts } from '../../../../hooks';
 import { PostService } from '../../../../services';
-import { Container, InteractionBar, PostMessageWrapper } from './styles';
+import { Container, InteractionBar } from './styles';
 
 export function Publish(props: PublishProps) {
   const {
@@ -76,22 +76,6 @@ export function Publish(props: PublishProps) {
     setIsLoading(false);
   }
 
-  const renderPostMessage: JSX.Element = (
-    <PostMessageWrapper>
-      <Typography
-        variant='nunitoSemiBold'
-        text={`@${nickname}: ${title}`}
-        fontSize='medium'
-      />
-
-      <Typography
-        variant='nunitoRegular'
-        text={description}
-        fontSize='medium'
-      />
-    </PostMessageWrapper>
-  );
-
   return (
     <Container>
       <PostTemplate
@@ -135,7 +119,7 @@ export function Publish(props: PublishProps) {
         </TouchableOpacity>
       </InteractionBar>
 
-      {renderPostMessage}
+      <Comment comment={description} nickname={nickname} title={title} />
     </Container>
   );
 }
