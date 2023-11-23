@@ -116,7 +116,7 @@ export const PORT = '8080';
 
 ## :iphone: Demonstração
 
-Para ver a demostração do aplicativo, basta [clicar aqui](https://drive.google.com/file/d/1NuX3eEjTBzDsWP3ION1bzk-5Qp4a0EQU/view?usp=sharing) e baixar o vídeo de demonstração!
+Para ver a demostração do aplicativo, basta [clicar aqui](https://drive.google.com/file/d/1NuX3eEjTBzDsWP3ION1bzk-5Qp4a0EQU/view?usp=sharing) e baixe o vídeo de demonstração!
 
 ## :memo: Licença
 
