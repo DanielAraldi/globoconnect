@@ -9,7 +9,6 @@ export const Container = styled.View`
 
   width: 100%;
 
-  padding: ${spacings[4]}px;
   padding-bottom: 0;
 `;
 
@@ -20,6 +19,15 @@ export const UserContainer = styled.View`
   justify-content: space-between;
 
   margin-bottom: ${spacings[3]}px;
+
+  padding: ${spacings[4]}px;
+  padding-bottom: 0;
+`;
+
+export const UserDescriptionWrapper = styled.View`
+  width: 100%;
+
+  padding: 0 ${spacings[4]}px;
 `;
 
 export const SocialContent = styled.View`

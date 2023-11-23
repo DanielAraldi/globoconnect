@@ -83,7 +83,7 @@ export function PostTemplate(props: PostTemplateProps) {
           <Feather
             name='share-2'
             color={colors.light.main}
-            size={spacings[4]}
+            size={spacings[5]}
           />
         </Pressable>
       </BarContent>

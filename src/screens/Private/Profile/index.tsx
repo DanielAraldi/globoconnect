@@ -28,6 +28,7 @@ import {
   PostHeader,
   SocialContent,
   UserContainer,
+  UserDescriptionWrapper,
 } from './styles';
 
 export function Profile() {
@@ -53,9 +54,11 @@ export function Profile() {
   const avatarUrl = isVisit ? params.avatarUrl : user.avatarUrl;
   const followers = isVisit ? params.followers : user.followers;
   const following = isVisit ? params.following : user.following;
+
   const totalPosts = formatNumbersToShowInProfile(postsOfUser.length);
   const totalFollowers = formatNumbersToShowInProfile(followers);
   const totalFollowing = formatNumbersToShowInProfile(following);
+
   const itemsByPage = ITENS_LIMIT_BY_PAGE * currentPage;
   const posts = isLoadingList ? [] : postsOfUser.slice(0, itemsByPage);
 
@@ -171,13 +174,15 @@ export function Profile() {
           </SocialContent>
         </UserContainer>
 
-        <Typography
-          text={username}
-          variant='nunitoRegular'
-          textAlign='left'
-          fontSize='medium'
-          isCapitalized
-        />
+        <UserDescriptionWrapper>
+          <Typography
+            text={username}
+            variant='nunitoRegular'
+            textAlign='left'
+            fontSize='medium'
+            isCapitalized
+          />
+        </UserDescriptionWrapper>
 
         <PostHeader>
           <MaterialCommunityIcons

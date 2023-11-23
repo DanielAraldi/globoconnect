@@ -38,7 +38,7 @@ export function Publish(props: PublishProps) {
   const videoIsPaused = !isFocused || isPaused;
   const commonIconProps = {
     color: colors.light.main,
-    size: spacings[5],
+    size: spacings[7],
   };
 
   function showToast(title: string, message: string): void {
@@ -124,7 +124,7 @@ export function Publish(props: PublishProps) {
             <Then>
               <MaterialCommunityIcons
                 name='heart'
-                size={spacings[5]}
+                {...commonIconProps}
                 color={colors.primary}
               />
             </Then>
