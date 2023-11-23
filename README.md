@@ -17,7 +17,7 @@
   <a href="#stop_sign-limitações">Limitações</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#raising_hand_man-usuários-da-plataforma">Usuários da Plataforma</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#boom-como-executar">Como executar?</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#">Desmostração</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#iphone-demonstração">Demonstração</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#memo-licença">Licença</a>
 </p>
 
@@ -116,9 +116,7 @@ export const PORT = '8080';
 
 ## :iphone: Demonstração
 
-<div align="center">
-
-</div>
+Para ver a demostração do aplicativo, basta [clicar aqui](https://drive.google.com/file/d/1NuX3eEjTBzDsWP3ION1bzk-5Qp4a0EQU/view?usp=sharing) e baixar o vídeo de demonstração!
 
 ## :memo: Licença
 
