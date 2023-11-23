@@ -72,7 +72,7 @@ Este projeto foi desenvolvido por [Daniel Sansão Araldi](https://github.com/Dan
   $ npm install # ou yarn install para instalar as dependencias
 ```
 
-2. Na raiz do projeto, vá no arquivo chamado `package.json`. No script chamado **server** e substitua a palavra **YOUR_HOST** pelo IP da sua máquina.
+3. Na raiz do projeto, vá no arquivo chamado `package.json`. No script chamado **server** e substitua a palavra **YOUR_HOST** pelo IP da sua máquina.
 
 > Se você não souber o IP da sua máquina, basta abrir o terminal como administrador e escrever `ipconfig` e dar **enter** que irá aparecer o IP da sua máquina para você.
 
@@ -90,7 +90,7 @@ Este projeto foi desenvolvido por [Daniel Sansão Araldi](https://github.com/Dan
   },
 ```
 
-3. Agora, vá em `./src/config/env.ts`. Lá existe uma constante chamada `HOST`, substitua o valor dela pelo IP da sua máquina.
+4. Agora, vá em `./src/config/env.ts`. Lá existe uma constante chamada `HOST`, substitua o valor dela pelo IP da sua máquina.
 
 > Se você não souber o IP da sua máquina, basta abrir o terminal como administrador e escrever `ipconfig` e dar **enter** que irá aparecer o IP da sua máquina para você.
 
@@ -100,14 +100,14 @@ export const HOST = 'YOUR_HOST'; // <-- Substiua o YOUR_HOST que está nessa lin
 export const PORT = '8080';
 ```
 
-4. Executando a API mockada:
+5. Executando a API mockada:
 
 ```sh
   $ cd globoconnect # na raiz do projeto
   $ npm run server # yarn server para executar a API mockada
 ```
 
-5. Executando o App:
+6. Executando o App:
 
 ```sh
   $ cd globoconnect # na raiz do projeto
