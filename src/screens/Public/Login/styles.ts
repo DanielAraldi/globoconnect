@@ -25,9 +25,13 @@ export const GreetingContent = styled.View`
 
   justify-content: center;
   align-items: center;
+
+  padding-top: ${spacings[12]}px;
 `;
 
 export const InputContent = styled.View`
+  flex: 1;
+
   width: 100%;
 
   margin: ${spacings[5]}px 0;

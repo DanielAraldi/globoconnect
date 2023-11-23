@@ -3,7 +3,13 @@ import { Else, If, Then } from 'react-if';
 import { FlatList, Keyboard, TouchableNativeFeedback } from 'react-native';
 import Toast from 'react-native-toast-message';
 
-import { CommentProps, PostProps, ViewableItemsProps } from '../../../@types';
+import {
+  CommentProps,
+  GetItemLayoutProps,
+  GetItemLayoutType,
+  PostProps,
+  ViewableItemsProps,
+} from '../../../@types';
 import {
   Background,
   Comment,
@@ -43,6 +49,26 @@ export function Home() {
   const showedPosts = allPosts.slice(0, postsByPage);
   const showedComments = comments.slice(0, commentsByPage);
 
+  function showToast(title: string, message: string): void {
+    Toast.show({
+      type: 'error',
+      text1: title,
+      text2: message,
+    });
+  }
+
+  function getItemLayout(
+    type: GetItemLayoutType,
+    index: number,
+  ): GetItemLayoutProps {
+    const itemLayoutHeight = type === 'publish' ? 671.5 : 30;
+    return {
+      length: itemLayoutHeight,
+      offset: itemLayoutHeight * index,
+      index,
+    };
+  }
+
   function handleNextPostsPage(): void {
     if (allPosts.length > showedPosts.length) {
       setCurrentPostPage(currentPostPage + 1);
@@ -68,14 +94,6 @@ export function Home() {
     setCurrentPostPage(1);
     await loadAllPosts();
     setIsPostRefresh(false);
-  }
-
-  function showToast(title: string, message: string): void {
-    Toast.show({
-      type: 'error',
-      text1: title,
-      text2: message,
-    });
   }
 
   async function loadMoreComments(): Promise<void> {
@@ -177,6 +195,7 @@ export function Home() {
               onEndReached={handleNextPostsPage}
               onEndReachedThreshold={0.1}
               ItemSeparatorComponent={() => <ListDivider />}
+              getItemLayout={(_, index) => getItemLayout('publish', index)}
               refreshControl={
                 <Refresh refreshing={isPostRefresh} onRefresh={loadMorePosts} />
               }
@@ -229,6 +248,7 @@ export function Home() {
                   showsVerticalScrollIndicator={false}
                   onEndReached={handleNextCommentsPage}
                   onEndReachedThreshold={0.1}
+                  getItemLayout={(_, index) => getItemLayout('comment', index)}
                   refreshControl={
                     <Refresh
                       refreshing={isCommentsRefresh}

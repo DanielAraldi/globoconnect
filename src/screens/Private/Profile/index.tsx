@@ -1,5 +1,5 @@
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useFocusEffect, useRoute } from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import { useCallback, useState } from 'react';
 import { Else, If, Then } from 'react-if';
 import { FlatList, View } from 'react-native';
@@ -33,7 +33,8 @@ import {
 
 export function Profile() {
   const { user } = useAuth();
-  const { postsOfUser, isLoadingPosts, loadPostByUserId } = usePosts();
+  const { postsOfUser, postsOfUserVisited, isLoadingPosts, loadPostByUserId } =
+    usePosts();
 
   const route = useRoute();
   const params = route.params as UserProps;
@@ -48,6 +49,7 @@ export function Profile() {
   const { colors, spacings } = theme;
 
   const isLoadingList = isLoadingPosts && !isRefresh;
+  const posts = isVisit ? postsOfUserVisited : postsOfUser;
   const userId = isVisit ? params.id : user.id;
   const username = isVisit ? params.name : user.name;
   const nickname = isVisit ? params.nickname : user.nickname;
@@ -55,21 +57,30 @@ export function Profile() {
   const followers = isVisit ? params.followers : user.followers;
   const following = isVisit ? params.following : user.following;
 
-  const totalPosts = formatNumbersToShowInProfile(postsOfUser.length);
+  const totalPosts = formatNumbersToShowInProfile(posts.length);
   const totalFollowers = formatNumbersToShowInProfile(followers);
   const totalFollowing = formatNumbersToShowInProfile(following);
 
   const itemsByPage = ITENS_LIMIT_BY_PAGE * currentPage;
-  const posts = isLoadingList ? [] : postsOfUser.slice(0, itemsByPage);
+  const postsToList = isLoadingList ? [] : posts.slice(0, itemsByPage);
 
   function handleCloseModal(): void {
     setIsOpenPost(false);
   }
 
   function handleNextPage(): void {
-    if (postsOfUser.length > posts.length) {
+    if (postsOfUser.length > postsToList.length) {
       setCurrentPage(currentPage + 1);
     }
+  }
+
+  function getItemLayout(index: number) {
+    const thumbnailLayoutHeight = spacings[14] + spacings[10];
+    return {
+      length: thumbnailLayoutHeight,
+      offset: thumbnailLayoutHeight * index,
+      index,
+    };
   }
 
   async function fetchComments(postId: string): Promise<void> {
@@ -86,7 +97,8 @@ export function Profile() {
   async function loadMorePosts(): Promise<void> {
     setIsRefresh(true);
     setCurrentPage(1);
-    await loadPostByUserId(userId);
+    const loadPostByUserIdType = isVisit ? 'visit' : 'owner';
+    await loadPostByUserId(userId, loadPostByUserIdType);
     setIsRefresh(false);
   }
 
@@ -103,12 +115,6 @@ export function Profile() {
       />
     ),
     [postsOfUser],
-  );
-
-  useFocusEffect(
-    useCallback(() => {
-      loadPostByUserId(userId);
-    }, [isVisit]),
   );
 
   return (
@@ -201,13 +207,14 @@ export function Profile() {
 
         <PostContent>
           <FlatList
-            data={posts}
+            data={postsToList}
             keyExtractor={keyExtractor}
             renderItem={renderItem}
             contentContainerStyle={{ flexGrow: 1 }}
             showsVerticalScrollIndicator={false}
             viewabilityConfig={{ viewAreaCoveragePercentThreshold: 10 }}
             onEndReached={handleNextPage}
+            getItemLayout={(_, index) => getItemLayout(index)}
             onEndReachedThreshold={0.1}
             numColumns={2}
             refreshControl={

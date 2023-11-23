@@ -47,10 +47,11 @@ export function PostTemplate(props: PostTemplateProps) {
   }
 
   async function goToProfile(): Promise<void> {
-    if (nickname && nickname !== user.nickname) {
+    const isValidNickname = nickname && nickname !== user.nickname;
+    if (isValidNickname) {
       const response = await AuthService.loadByNickname(nickname);
       if (response) {
-        await loadPostByUserId(response.id);
+        await loadPostByUserId(response.id, 'visit');
         navigation.navigate('Profile', response);
       } else {
         showToast(

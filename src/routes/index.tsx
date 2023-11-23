@@ -19,7 +19,7 @@ export function Routes() {
     const userStoraged = await Storage.get<UserProps>('user');
     if (userStoraged) {
       await loadUser();
-      await loadPostByUserId(userStoraged.id);
+      await loadPostByUserId(userStoraged.id, 'owner');
       await loadAllPosts();
     }
     await SplashScreen.hideAsync();

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Keyboard, Platform, TouchableWithoutFeedback } from 'react-native';
 import Toast from 'react-native-toast-message';
 
-import { UserLoginProps } from '../../../@types';
+import { UserLoginProps, UserProps } from '../../../@types';
 import {
   Background,
   GenericButton,
@@ -11,6 +11,7 @@ import {
 } from '../../../components';
 import { LOGO, theme } from '../../../config';
 import { useAuth, usePosts } from '../../../hooks';
+import { Storage } from '../../../libs';
 import {
   ButtonContent,
   Container,
@@ -22,13 +23,13 @@ import {
 
 export function Login() {
   const { signIn, isLoadingAuth } = useAuth();
-  const { loadAllPosts } = usePosts();
+  const { loadAllPosts, loadPostByUserId } = usePosts();
 
-  const [user, setUser] = useState({} as UserLoginProps);
+  const [userCredentils, setUserCredentials] = useState({} as UserLoginProps);
 
   const { spacings } = theme;
   const isIos = Platform.OS === 'ios';
-  const canSumbmit = user.email && user.password;
+  const canSumbmit = userCredentils.email && userCredentils.password;
 
   function showToast(title: string, message: string): void {
     Toast.show({
@@ -41,7 +42,9 @@ export function Login() {
   async function onSubmit(): Promise<void> {
     if (canSumbmit) {
       await loadAllPosts();
-      const isLogged = await signIn(user);
+      const isLogged = await signIn(userCredentils);
+      const userData = await Storage.get<UserProps>('user');
+      await loadPostByUserId(userData?.id || '', 'owner');
       if (!isLogged) {
         showToast(
           'Puxa vida, não conseguimos conectar',
@@ -70,7 +73,9 @@ export function Login() {
                 type='email'
                 returnKeyType='next'
                 placeholder='Email'
-                onChangeText={text => setUser({ ...user, email: text })}
+                onChangeText={text =>
+                  setUserCredentials({ ...userCredentils, email: text })
+                }
                 isLoading={isLoadingAuth}
               />
 
@@ -79,7 +84,9 @@ export function Login() {
                 marginTop={spacings[3]}
                 returnKeyType='send'
                 placeholder='Senha'
-                onChangeText={text => setUser({ ...user, password: text })}
+                onChangeText={text =>
+                  setUserCredentials({ ...userCredentils, password: text })
+                }
                 onSubmitEditing={onSubmit}
                 isLoading={isLoadingAuth}
               />
