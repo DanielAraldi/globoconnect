@@ -33,6 +33,36 @@ export function PostProvider({ children }: Required<PropsWithChildren>) {
     return isCreated;
   }
 
+  async function likePostById(id: string, userId: string): Promise<boolean> {
+    const currentLikesOfPost: string[] = [];
+    const posts = allPosts.map(post => {
+      if (post.id === id) {
+        const likesOfPost = [...post.likes, userId];
+        currentLikesOfPost.push(...likesOfPost);
+        return { ...post, likes: likesOfPost };
+      }
+      return post;
+    });
+    setAllPosts(posts);
+    const isLiked = await PostService.like(id, currentLikesOfPost);
+    return isLiked;
+  }
+
+  async function deslikePostById(id: string, userId: string): Promise<boolean> {
+    const currentLikesOfPost: string[] = [];
+    const posts = allPosts.map(post => {
+      if (post.id === id) {
+        const likesOfPost = post.likes.filter(likeId => likeId !== userId);
+        currentLikesOfPost.push(...likesOfPost);
+        return { ...post, likes: likesOfPost };
+      }
+      return post;
+    });
+    setAllPosts(posts);
+    const isDesliked = await PostService.deslike(id, currentLikesOfPost);
+    return isDesliked;
+  }
+
   return (
     <PostContext.Provider
       value={{
@@ -42,6 +72,8 @@ export function PostProvider({ children }: Required<PropsWithChildren>) {
         createPost,
         loadAllPosts,
         loadPostByUserId,
+        likePostById,
+        deslikePostById,
       }}
     >
       {children}

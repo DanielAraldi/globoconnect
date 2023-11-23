@@ -18,6 +18,6 @@ export interface PostServiceProps {
   loadAll(): Promise<PostProps[]>;
   loadById(postId: string): Promise<PostProps | null>;
   loadAllByUserId(userId: string): Promise<PostProps[]>;
-  like(postId: string, userId: string): Promise<boolean>;
-  deslike(postId: string, userId: string): Promise<boolean>;
+  like(postId: string, currentLikes: string[]): Promise<boolean>;
+  deslike(postId: string, currentLikes: string[]): Promise<boolean>;
 }

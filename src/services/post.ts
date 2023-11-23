@@ -50,32 +50,24 @@ export const PostService: PostServiceProps = {
     }
   },
 
-  async like(postId: string, userId: string): Promise<boolean> {
+  async like(postId: string, currentLikes: string[]): Promise<boolean> {
     try {
-      const post = await this.loadById(postId);
-      if (post) {
-        await api.patch<PostProps>(`/posts/${postId}`, {
-          likes: [...post.likes, userId],
-        });
-      }
-      return post ? true : false;
+      await api.patch<PostProps>(`/posts/${postId}`, {
+        likes: [...currentLikes],
+      });
+      return true;
     } catch (error) {
       return false;
     }
   },
 
-  async deslike(postId: string, userId: string): Promise<boolean> {
+  async deslike(postId: string, currentLikes: string[]): Promise<boolean> {
     try {
-      const post = await this.loadById(postId);
-      if (post) {
-        const likesFiltered = post.likes.filter(id => userId !== id);
-        await api.patch<PostProps>(`/posts/${postId}`, {
-          likes: likesFiltered,
-        });
-      }
-      return post ? true : false;
+      await api.patch<PostProps>(`/posts/${postId}`, {
+        likes: [...currentLikes],
+      });
+      return true;
     } catch (error) {
-      console.log(error);
       return false;
     }
   },

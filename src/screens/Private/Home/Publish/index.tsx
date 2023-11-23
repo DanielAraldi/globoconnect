@@ -9,7 +9,6 @@ import { PublishProps } from '../../../../@types';
 import { Comment, PostTemplate } from '../../../../components';
 import { theme } from '../../../../config';
 import { useAuth, usePosts } from '../../../../hooks';
-import { PostService } from '../../../../services';
 import { Container, InteractionBar } from './styles';
 
 export function Publish(props: PublishProps) {
@@ -26,7 +25,7 @@ export function Publish(props: PublishProps) {
     onPress,
   } = props;
 
-  const { loadAllPosts } = usePosts();
+  const { loadAllPosts, likePostById, deslikePostById } = usePosts();
   const { user } = useAuth();
   const isFocused = useIsFocused();
 
@@ -56,21 +55,21 @@ export function Publish(props: PublishProps) {
     );
   }
 
-  async function giveLike(): Promise<void> {
-    const isLiked = await PostService.like(postId, user.id);
+  async function handleLike(): Promise<void> {
+    const isLiked = likePostById(postId, user.id);
     if (!isLiked) handleToastMessage();
   }
 
-  async function giveDeslike(): Promise<void> {
-    const isDesliked = await PostService.deslike(postId, user.id);
+  async function handleDeslike(): Promise<void> {
+    const isDesliked = deslikePostById(postId, user.id);
     if (!isDesliked) handleToastMessage();
   }
 
   async function handleSatisfaction(): Promise<void> {
     setIsLoading(true);
 
-    if (isLikedPost) await giveDeslike();
-    else await giveLike();
+    if (isLikedPost) await handleDeslike();
+    else await handleLike();
 
     await loadAllPosts();
     setIsLoading(false);
