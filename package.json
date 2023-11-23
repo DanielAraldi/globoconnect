@@ -10,7 +10,7 @@
     "lint": "eslint --fix ./**/*.{ts,tsx}",
     "pretty": "prettier --write .",
     "prepare": "husky install",
-    "server": "npx json-server ./src/services/mock/server.json --host 192.168.0.109 --port 8080 --delay 300"
+    "server": "npx json-server ./src/services/mock/server.json --host YOUR_HOST --port 8080 --delay 300"
   },
   "dependencies": {
     "@expo-google-fonts/nunito-sans": "^0.2.3",
