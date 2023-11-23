@@ -12,9 +12,10 @@
 </p>
 
 <p align="center">
-  <a href="#bookmark-sobre-o-projeto">Sobre</a>
+  <a href="#bookmark-sobre-o-projeto">Sobre o Projeto</a>
   &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#stop_sign-limitações">Limitações</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#raising_hand_man-usuários-da-plataforma">Usuários da Plataforma</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#boom-como-executar">Como executar?</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#">Desmostração</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#memo-licença">Licença</a>
@@ -26,7 +27,7 @@ O GloboConnect é um aplicativo de redes sociais que faz o upload de vídeos cur
 
 Com o GloboConnect você pode interagir via curtidas, descurtir, comentar e compartilhar postagens.
 
-Você também pode postar sua própria publicação e vizualizar o perfil de outros usuários atráves da Home clicando na foto ou nickname deles.
+Você também pode postar suas próprias publicações e vizualizar o perfil de outros usuários atráves da Home clicando na foto ou nickname deles.
 
 Este projeto foi desenvolvido por [Daniel Sansão Araldi](https://github.com/DanielAraldi) para o teste do processo seletivo da [GRPCOM](https://www.grpcom.com.br/).
 
@@ -36,6 +37,19 @@ Este projeto foi desenvolvido por [Daniel Sansão Araldi](https://github.com/Dan
 2. A plataforma **alvo** no desenvolvimento foi **iOS** por conta de não ter dispositivos **Android** disponíveis para testar o aplicativo.
 3. Foram realizadas as tentativas de tentar **emular** dispositivos **Android** no computador, mas se tornou insuficiente, tornando o desenvolvimento muito lento.
 4. Deixo claro que, existe possibilidades de que dispositivos **Android** não estejam funcionando corretamente ou até mesmo apresentando erros no aplicativo. Pois, como dito anteriormente, **não** tinha dispositivos **Android** disponíveis para testar o aplicativo.
+5. O upload dos vídeos é feito atráves de um caminho `file://` que o Expo ImagePicker e o Expo Camera retornam em suas respostas e são armazenados no server mockado, no caso, a URI deste vídeo pertece ao dispositivo o qual fez o upload dele. Caso você tente acessar essa mesma URI por **outro** dispositivo isso não irá funcionar, pois esse caminho não existe neste dispositivo, somente no outro.
+
+## :raising_hand_man: Usuários da Plataforma
+
+| E-mail                      | Senha    | Tem postagem? |
+| --------------------------- | -------- | ------------- |
+| `rafaelmota@gmail.com`      | `abc123` | **Sim**       |
+| `filipedeschamps@gmail.com` | `abc123` | **Sim**       |
+| `rocketseat@gmail.com`      | `abc123` | **Sim**       |
+| `maykbrito@gmail.com`       | `abc123` | **Sim**       |
+| `diego3g@gmail.com`         | `abc123` | **Sim**       |
+| `marcosjbm@gmail.com`       | `abc123` | **Não**       |
+| `danielsaraldi@gmail.com`   | `abc123` | **Não**       |
 
 ## :boom: Como executar?
 
@@ -63,6 +77,7 @@ Este projeto foi desenvolvido por [Daniel Sansão Araldi](https://github.com/Dan
 > Se você não souber o IP da sua máquina, basta abrir o terminal como administrador e escrever `ipconfig` e dar **enter** que irá aparecer o IP da sua máquina para você.
 
 ```json
+  // package.json
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
@@ -71,13 +86,19 @@ Este projeto foi desenvolvido por [Daniel Sansão Araldi](https://github.com/Dan
     "lint": "eslint --fix ./**/*.{ts,tsx}",
     "pretty": "prettier --write .",
     "prepare": "husky install",
-    "server": "npx json-server ./src/services/mock/server.json --host YOUR_HOST --port 8080 --delay 300"
+    "server": "npx json-server ./src/services/mock/server.json --host YOUR_HOST --port 8080 --delay 300" // <-- Substiua o YOUR_HOST que está nessa linha
   },
 ```
 
-3. Agora, vá em `src/config/env.ts`. Lá existe uma constante chamada `HOST`, substitua o valor dela pelo IP da sua máquina.
+3. Agora, vá em `./src/config/env.ts`. Lá existe uma constante chamada `HOST`, substitua o valor dela pelo IP da sua máquina.
 
 > Se você não souber o IP da sua máquina, basta abrir o terminal como administrador e escrever `ipconfig` e dar **enter** que irá aparecer o IP da sua máquina para você.
+
+```ts
+// src/config/env.ts
+export const HOST = 'YOUR_HOST'; // <-- Substiua o YOUR_HOST que está nessa linha
+export const PORT = '8080';
+```
 
 4. Executando a API mockada:
 
@@ -96,6 +117,7 @@ Este projeto foi desenvolvido por [Daniel Sansão Araldi](https://github.com/Dan
 ## :iphone: Demonstração
 
 <div align="center">
+
 </div>
 
 ## :memo: Licença
